@@ -2,6 +2,8 @@ from flask import Flask, jsonify, request
 import requests
 from bs4 import BeautifulSoup
 
+
+
 app = Flask(__name__)
 
 api = "AIzaSyApYeEExoKk12vDdglSOmLwGD7QC_HX2Bg"
