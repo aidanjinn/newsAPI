@@ -360,7 +360,7 @@ def yahoo_sports_pick_of_day():
             else:
                 return {"error": "No article link found in the main content div."}
         else:
-            return {"error": "Main content div not found on the ESPN homepage."}
+            return {"error": "Main content div not found on the Yahoo homepage."}
 
     except requests.exceptions.RequestException as e:
         return {"error": f"An error occurred while fetching the data: {e}"}
@@ -413,17 +413,17 @@ def yahoo_sports_breaking_news():
             else:
                 return {"error": "No article link found in the main content div."}
         else:
-            return {"error": "Main content div not found on the ESPN homepage."}
+            return None
 
     except requests.exceptions.RequestException as e:
-        return {"error": f"An error occurred while fetching the data: {e}"}
+        return None
 
 
 # Function to summarize article using Gemini
 def summarize_article_with_gemini(article_text):
     prompt = (f"Summarize the following article into its main 5 points be concise and create the summary/points based on only the data"
               f"provided to you. Do not make up any information only use what I give you. Do not start your response with a response to my prompt"
-              f"only the summary::\n\n{article_text}")
+              f"Only Give the Summary::\n\n{article_text}")
     try:
         response = model.generate_content(prompt)
         summary = response.text.strip()
@@ -483,7 +483,13 @@ def scape_article6():
 @app.route('/yahoo-sports', methods=['GET'])
 def scape_article7():
 
-    result = [yahoo_sports_breaking_news(), yahoo_sports_pick_of_day()]
+    breaking_news = yahoo_sports_breaking_news()
+    pick_of_day = yahoo_sports_pick_of_day()
+
+    if breaking_news:
+        result = [breaking_news, pick_of_day]
+    else:
+        result = [pick_of_day]
 
     return jsonify(result)
 
