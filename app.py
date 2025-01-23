@@ -1,75 +1,13 @@
 from flask import Flask, jsonify
 from scraping_methods import *
 
-
-'''
-I will later split the definitions into a different file
-just have the routes here for now deal with my poor organizational skills
-'''
-
 '''
 [JSON Object Fields]
 @ Website Link:
-@ Date:
 @ Summary:
-@ Authors:
 '''
 
 app = Flask(__name__)
-
-#
-'''
-    New Publication IDEAS:
-        * Wikipedia Article of the Day ???
-        * AP LEFT CENTER DONE 
-        * NPR LEFT CENTER
-        * Wired DONE
-        
-        * Wall Street Journal RIGHT LEANING
-        * Stars and Stripes RIGHT CENTER
-        
-        * Pew Research Center Center
-        * Weather.com
-        
-        * Vogue DONE FASHION
-        * Cosmo
-        * ESPN
-    
-        
-        # World Block
-        
-        * South China Morning Post
-        * DW
-        
-        * BBC
-        * Telegraph
-        * Guardian
-        * Sky News
-        
-        * Taipei Times
-        * United Daily News
-        
-        * Indian Express
-        * Times of India
-        * Hindustan Times
-        
-        * NHK
-        
-        # DEVIN LEFTIST BLOCK
-        * New York Times
-        * Al Jazeera Zero
-        * Democracy Now
-        * Grist (Climate) potential to be own category or wrapped with weather.
-'''
-
-
-'''
-    AP: WORLD NEWS
-    WIRED: TECH/WORLDS NEWS
-    
-    VOGUE: FASHION
-'''
-
 
 @app.route('/wired-pick-of-day', methods=['GET'])
 def scrape_article():
@@ -80,9 +18,9 @@ def scrape_article():
 
 @app.route('/wired-pick-of-day-text', methods=['GET'])
 def scrape_article_text():
-    # Call the scraping function
+
     result = wired_pick_of_day(False)
-    # Return the result as a JSON response
+
     return jsonify(result)
 
 @app.route('/AP-pick-of-day', methods=['GET'])
@@ -94,11 +32,10 @@ def scape_article2():
 
 @app.route('/AP-pick-of-day-text', methods=['GET'])
 def scrape_article2_text():
-    # Call the scraping function
-    result = AP_pick_of_day(False)
-    # Return the result as a JSON response
-    return jsonify(result)
 
+    result = AP_pick_of_day(False)
+
+    return jsonify(result)
 
 @app.route('/vogue-pick-of-day', methods=['GET'])
 def scape_article3():
@@ -128,10 +65,6 @@ def scape_article4_text():
 
     return jsonify(result)
 
-
-'''
-    Yahoo Sports Section
-'''
 @app.route('/yahoo-sports-pick-of-day', methods=['GET'])
 def scape_article5():
 
@@ -225,10 +158,6 @@ def scrape_article8_text():
         result.append(yahoo_sports_pick_of_day(url,False))
 
     return jsonify(result)
-
-'''
-    Yahoo Sports Section Done
-'''
 
 @app.route('/democracy-now-pick-of-day', methods=['GET'])
 def scape_article9():
@@ -437,12 +366,14 @@ def scape_article24_text():
 
 @app.route('/people-pick-of-day', methods=['GET'])
 def scape_article25():
+
     result = people_pick_of_day(True)
 
     return jsonify(result)
 
 @app.route('/people-pick-of-day-text', methods=['GET'])
 def scape_article25_text():
+
     result = people_pick_of_day(False)
 
     return jsonify(result)

@@ -339,7 +339,7 @@ def yahoo_sports_pick_of_day(url, ai):
 
         # Find the main content div with the identified class
         main_content_div = soup.find('div', attrs={
-            'class': '_ys_m0uq4h _ys_182ob5z'})
+            'class': '_ys_1unhdgw _ys_1kkgpmk'})
 
         if main_content_div:
             # Now, find the first article or link within this div
