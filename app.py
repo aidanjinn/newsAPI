@@ -98,7 +98,7 @@ app = Flask(__name__)
           
         * RETURNS: JSON object with fields: article_link and article_text
 '''
-def vogue_pick_of_day():
+def vogue_pick_of_day(ai):
     url = "https://www.vogue.com/fashion"
 
     try:
@@ -136,7 +136,10 @@ def vogue_pick_of_day():
                 # Join all paragraphs to get the full article text
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                summary = summarize_article_with_gemini(article_text)
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
 
                 return {
                     "article_link": article_link,
@@ -152,7 +155,7 @@ def vogue_pick_of_day():
 
 
 # Function to scrape the second article from Wired's "Today’s Picks"
-def wired_pick_of_day():
+def wired_pick_of_day(ai):
     url = "https://www.wired.com/"
 
     try:
@@ -194,7 +197,10 @@ def wired_pick_of_day():
                     # Join all paragraphs to get the full article text
                     article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                    summary = summarize_article_with_gemini(article_text)
+                    if ai:
+                        summary = summarize_article_with_gemini(article_text)
+                    else:
+                        summary = article_text
 
                     return {
                         "article_link": article_link,
@@ -211,7 +217,7 @@ def wired_pick_of_day():
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 # Function to scrape the front page article from AP
-def AP_pick_of_day():
+def AP_pick_of_day(ai):
     url = "https://apnews.com/"
 
     try:
@@ -249,7 +255,10 @@ def AP_pick_of_day():
                 # Join all paragraphs to get the full article text
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                summary = summarize_article_with_gemini(article_text)
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
 
                 return {
                     "article_link": article_link,
@@ -264,7 +273,7 @@ def AP_pick_of_day():
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
-def rolling_stone_pick_of_day():
+def rolling_stone_pick_of_day(ai):
     url = "https://www.rollingstone.com/tv-movies/"
 
     try:
@@ -303,7 +312,10 @@ def rolling_stone_pick_of_day():
                 # Join all paragraphs to get the full article text
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                summary = summarize_article_with_gemini(article_text)
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
 
                 return {
                     "article_link": article_link,
@@ -317,7 +329,7 @@ def rolling_stone_pick_of_day():
     except requests.exceptions.RequestException as e:
         return {"error": f"An error occurred while fetching the data: {e}"}
 
-def yahoo_sports_pick_of_day(url):
+def yahoo_sports_pick_of_day(url, ai):
 
 
     try:
@@ -356,7 +368,10 @@ def yahoo_sports_pick_of_day(url):
                 # Join all paragraphs to get the full article text
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                summary = summarize_article_with_gemini(article_text)
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
 
                 return {
                     "article_link": article_link,
@@ -370,7 +385,7 @@ def yahoo_sports_pick_of_day(url):
     except requests.exceptions.RequestException as e:
         return None
 
-def yahoo_sports_breaking_news():
+def yahoo_sports_breaking_news(ai):
     url = "https://sports.yahoo.com/"
 
     try:
@@ -409,7 +424,10 @@ def yahoo_sports_breaking_news():
                 # Join all paragraphs to get the full article text
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                summary = summarize_article_with_gemini(article_text)
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
 
                 return {
                     "article_link": article_link,
@@ -423,7 +441,7 @@ def yahoo_sports_breaking_news():
     except requests.exceptions.RequestException as e:
         return None
 
-def democracy_now_pick_of_day():
+def democracy_now_pick_of_day(ai):
     url = "https://www.democracynow.org"
 
     try:
@@ -462,7 +480,10 @@ def democracy_now_pick_of_day():
                 # Join all paragraphs to get the full article text
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                summary = summarize_article_with_gemini(article_text)
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
 
                 return {
                     "article_link": article_link,
@@ -477,7 +498,7 @@ def democracy_now_pick_of_day():
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 # Chinese New Publication
-def SCMP_pick_of_day():
+def SCMP_pick_of_day(ai):
     url = "https://www.scmp.com"
 
     try:
@@ -516,7 +537,10 @@ def SCMP_pick_of_day():
                 # Join all paragraphs to get the full article text
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                summary = summarize_article_with_gemini(article_text)
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
 
                 return {
                     "article_link": article_link,
@@ -531,7 +555,7 @@ def SCMP_pick_of_day():
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 # Chinese New Publication
-def SCMP_china():
+def SCMP_china(ai):
     url = "https://www.scmp.com/news/china"
 
     try:
@@ -570,7 +594,10 @@ def SCMP_china():
                 # Join all paragraphs to get the full article text
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                summary = summarize_article_with_gemini(article_text)
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
 
                 return {
                     "article_link": article_link,
@@ -584,7 +611,7 @@ def SCMP_china():
     except requests.exceptions.RequestException as e:
         return {"error": f"An error occurred while fetching the data: {e}"}
 
-def cosmo_style():
+def cosmo_style(ai):
     url = "https://www.cosmopolitan.com/style-beauty/fashion/"
 
     try:
@@ -623,7 +650,10 @@ def cosmo_style():
                 # Join all paragraphs to get the full article text
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                summary = summarize_article_with_gemini(article_text)
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
 
                 return {
                     "article_link": article_link,
@@ -637,7 +667,7 @@ def cosmo_style():
     except requests.exceptions.RequestException as e:
         return {"error": f"An error occurred while fetching the data: {e}"}
 
-def techcrunch_pick_of_day():
+def techcrunch_pick_of_day(ai):
     url = "https://techcrunch.com/"
 
     try:
@@ -677,7 +707,10 @@ def techcrunch_pick_of_day():
                 # Join all paragraphs to get the full article text
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                summary = summarize_article_with_gemini(article_text)
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
 
                 return {
                     "article_link": article_link,
@@ -691,7 +724,7 @@ def techcrunch_pick_of_day():
     except requests.exceptions.RequestException as e:
         return {"error": f"An error occurred while fetching the data: {e}"}
 
-def zdnet_pick_of_day():
+def zdnet_pick_of_day(ai):
     url = "https://www.zdnet.com"
 
     try:
@@ -730,7 +763,10 @@ def zdnet_pick_of_day():
                 # Join all paragraphs to get the full article text
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                summary = summarize_article_with_gemini(article_text)
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
 
                 return {
                     "article_link": article_link,
@@ -744,7 +780,7 @@ def zdnet_pick_of_day():
     except requests.exceptions.RequestException as e:
         return {"error": f"An error occurred while fetching the data: {e}"}
 
-def weather_channel_pick_of_day():
+def weather_channel_pick_of_day(ai):
     url = "https://weather.com"
 
     try:
@@ -783,7 +819,10 @@ def weather_channel_pick_of_day():
                 # Join all paragraphs to get the full article text
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                summary = summarize_article_with_gemini(article_text)
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
 
                 return {
                     "article_link": article_link,
@@ -798,7 +837,7 @@ def weather_channel_pick_of_day():
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
-def weather_gov_pick_of_day():
+def weather_gov_pick_of_day(ai):
     url = "https://www.weather.gov/"
 
     try:
@@ -838,7 +877,10 @@ def weather_gov_pick_of_day():
                 # Join all paragraphs to get the full article text
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
-                summary = summarize_article_with_gemini(article_text)
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
 
                 return {
                     "article_link": article_link,
@@ -852,6 +894,173 @@ def weather_gov_pick_of_day():
     except requests.exceptions.RequestException as e:
         return {"error": f"An error occurred while fetching the data: {e}"}
 
+def yahoo_finance_pick_of_day(ai):
+    url = "https://finance.yahoo.com/"
+
+    try:
+        # Send a GET request to the AP homepage
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception if the status code is not 200
+
+        # Parse the HTML content of the page using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find the main content div with the identified class
+        main_content_div = soup.find('div', attrs={
+            'class' : 'hero-lead yf-1m9jpnz'})
+
+        if main_content_div:
+            # Now, find the first article or link within this div
+            main_article_link = main_content_div.find('a', href=True)
+
+            if main_article_link:
+                article_link = main_article_link['href']
+
+                # Handle relative URLs by adding the base URL
+                if article_link.startswith('/'):
+                    article_link = 'https://finance.yahoo.com' + article_link
+
+                # Send a GET request to the article page to extract the article text
+                article_response = requests.get(article_link)
+                article_response.raise_for_status()
+
+                # Parse the article page
+                article_soup = BeautifulSoup(article_response.content, 'html.parser')
+
+                # Extract article content (usually inside <p> tags)
+                paragraphs = article_soup.find_all('p')
+
+                # Join all paragraphs to get the full article text
+                article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
+
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
+
+                return {
+                    "article_link": article_link,
+                    "article_text": summary
+                }
+            else:
+                return {"error": "No article link found in the main content div."}
+        else:
+            return None
+
+    except requests.exceptions.RequestException as e:
+        return {"error": f"An error occurred while fetching the data: {e}"}
+
+def economist_pick_of_day(ai):
+    url = "https://www.economist.com/"
+
+    try:
+        # Send a GET request to the AP homepage
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception if the status code is not 200
+
+        # Parse the HTML content of the page using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find the main content div with the identified class
+        main_content_div = soup.find('section', attrs={
+            'id' : 'new-relic-top-stories', 'class' : 'css-gbdfxv eeawncf0'})
+
+        if main_content_div:
+            # Now, find the first article or link within this div
+            main_article_link = main_content_div.find('a', href=True)
+
+            if main_article_link:
+                article_link = main_article_link['href']
+
+                # Handle relative URLs by adding the base URL
+                if article_link.startswith('/'):
+                    article_link = 'https://www.economist.com' + article_link
+
+                # Send a GET request to the article page to extract the article text
+                article_response = requests.get(article_link)
+                article_response.raise_for_status()
+
+                # Parse the article page
+                article_soup = BeautifulSoup(article_response.content, 'html.parser')
+
+                # Extract article content (usually inside <p> tags)
+                paragraphs = article_soup.find_all('p')
+
+                # Join all paragraphs to get the full article text
+                article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
+
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
+
+                return {
+                    "article_link": article_link,
+                    "article_text": summary
+                }
+            else:
+                return {"error": "No article link found in the main content div."}
+        else:
+            return None
+
+    except requests.exceptions.RequestException as e:
+        return {"error": f"An error occurred while fetching the data: {e}"}
+
+def forbes_pick_of_day(ai):
+    url = "https://www.forbes.com/"
+
+    try:
+        # Send a GET request to the AP homepage
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception if the status code is not 200
+
+        # Parse the HTML content of the page using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find the main content div with the identified class
+        main_content_div = soup.find('div', attrs={
+            'class' : 'card card--large csf-block'})
+
+        if main_content_div:
+            # Now, find the first article or link within this div
+            main_article_link = main_content_div.find('a', href=True)
+
+            if main_article_link:
+                article_link = main_article_link['href']
+
+                # Handle relative URLs by adding the base URL
+                if article_link.startswith('/'):
+                    article_link = 'https://www.forbes.com' + article_link
+
+                # Send a GET request to the article page to extract the article text
+                article_response = requests.get(article_link)
+                article_response.raise_for_status()
+
+                # Parse the article page
+                article_soup = BeautifulSoup(article_response.content, 'html.parser')
+
+                # Extract article content (usually inside <p> tags)
+                paragraphs = article_soup.find_all('p')
+
+                # Join all paragraphs to get the full article text
+                article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
+
+                if ai:
+                    summary = summarize_article_with_gemini(article_text)
+                else:
+                    summary = article_text
+
+                return {
+                    "article_link": article_link,
+                    "article_text": summary
+                }
+            else:
+                return {"error": "No article link found in the main content div."}
+        else:
+            return None
+
+    except requests.exceptions.RequestException as e:
+        return {"error": f"An error occurred while fetching the data: {e}"}
 
 
 # Function to summarize article using Gemini
@@ -871,29 +1080,57 @@ def summarize_article_with_gemini(article_text):
 @app.route('/wired-pick-of-day', methods=['GET'])
 def scrape_article():
     # Call the scraping function
-    result = wired_pick_of_day()
+    result = wired_pick_of_day(True)
+    # Return the result as a JSON response
+    return jsonify(result)
+
+@app.route('/wired-pick-of-day-text', methods=['GET'])
+def scrape_article_text():
+    # Call the scraping function
+    result = wired_pick_of_day(False)
     # Return the result as a JSON response
     return jsonify(result)
 
 @app.route('/AP-pick-of-day', methods=['GET'])
 def scape_article2():
 
-    result = AP_pick_of_day()
+    result = AP_pick_of_day(True)
 
+    return jsonify(result)
+
+@app.route('/AP-pick-of-day-text', methods=['GET'])
+def scrape_article2_text():
+    # Call the scraping function
+    result = AP_pick_of_day(False)
+    # Return the result as a JSON response
     return jsonify(result)
 
 
 @app.route('/vogue-pick-of-day', methods=['GET'])
 def scape_article3():
 
-    result = vogue_pick_of_day()
+    result = vogue_pick_of_day(True)
+
+    return jsonify(result)
+
+@app.route('/vogue-pick-of-day-text', methods=['GET'])
+def scape_article3_text():
+
+    result = vogue_pick_of_day(False)
 
     return jsonify(result)
 
 @app.route('/rolling-stone-movies-tv-pick-of-day', methods=['GET'])
 def scape_article4():
 
-    result = rolling_stone_pick_of_day()
+    result = rolling_stone_pick_of_day(True)
+
+    return jsonify(result)
+
+@app.route('/rolling-stone-movies-tv-pick-of-day-text', methods=['GET'])
+def scape_article4_text():
+
+    result = rolling_stone_pick_of_day(False)
 
     return jsonify(result)
 
@@ -904,22 +1141,49 @@ def scape_article4():
 @app.route('/yahoo-sports-pick-of-day', methods=['GET'])
 def scape_article5():
 
-    result = yahoo_sports_pick_of_day("https://sports.yahoo.com/")
+    result = yahoo_sports_pick_of_day("https://sports.yahoo.com/", True)
+
+    return jsonify(result)
+
+@app.route('/yahoo-sports-pick-of-day-text', methods=['GET'])
+def scape_article5_text():
+
+    result = yahoo_sports_pick_of_day("https://sports.yahoo.com/", False)
 
     return jsonify(result)
 
 @app.route('/yahoo-sports-breaking-news', methods=['GET'])
 def scape_article6():
 
-    result = yahoo_sports_breaking_news()
+    result = yahoo_sports_breaking_news(True)
+
+    return jsonify(result)
+
+@app.route('/yahoo-sports-breaking-news-text', methods=['GET'])
+def scape_article6_text():
+
+    result = yahoo_sports_breaking_news(False)
 
     return jsonify(result)
 
 @app.route('/yahoo-sports', methods=['GET'])
 def scape_article7():
 
-    breaking_news = yahoo_sports_breaking_news()
-    pick_of_day = yahoo_sports_pick_of_day("https://sports.yahoo.com/")
+    breaking_news = yahoo_sports_breaking_news(True)
+    pick_of_day = yahoo_sports_pick_of_day("https://sports.yahoo.com/",True)
+
+    if breaking_news:
+        result = [breaking_news, pick_of_day]
+    else:
+        result = [pick_of_day]
+
+    return jsonify(result)
+
+@app.route('/yahoo-sports-text', methods=['GET'])
+def scape_article7_text():
+
+    breaking_news = yahoo_sports_breaking_news(False)
+    pick_of_day = yahoo_sports_pick_of_day("https://sports.yahoo.com/",False)
 
     if breaking_news:
         result = [breaking_news, pick_of_day]
@@ -944,33 +1208,83 @@ def scrape_article8():
 
     result = []
     for url in urls:
-        result.append(yahoo_sports_pick_of_day(url))
+        result.append(yahoo_sports_pick_of_day(url,True))
 
     return jsonify(result)
+
+
+@app.route('/yahoo-sports-recap-text', methods = ['GET'])
+def scrape_article8_text():
+
+    urls = [
+        "https://sports.yahoo.com/nfl/",
+        "https://sports.yahoo.com/college-football/",
+        "https://sports.yahoo.com/nba/",
+        "https://sports.yahoo.com/nhl/",
+        "https://sports.yahoo.com/college-basketball/",
+        "https://sports.yahoo.com/college-womens-basketball/",
+        "https://sports.yahoo.com/mlb/"
+    ]
+
+    result = []
+    for url in urls:
+        result.append(yahoo_sports_pick_of_day(url,False))
+
+    return jsonify(result)
+
+'''
+    Yahoo Sports Section Done
+'''
 
 @app.route('/democracy-now-pick-of-day', methods=['GET'])
 def scape_article9():
 
-    result = democracy_now_pick_of_day()
+    result = democracy_now_pick_of_day(True)
+
+    return jsonify(result)
+
+@app.route('/democracy-now-pick-of-day-text', methods=['GET'])
+def scape_article9_text():
+
+    result = democracy_now_pick_of_day(False)
 
     return jsonify(result)
 
 @app.route('/world-news', methods=['GET'])
 def scape_article10():
 
-    return jsonify([AP_pick_of_day(), democracy_now_pick_of_day(), SCMP_pick_of_day()])
+    return jsonify([AP_pick_of_day(True), democracy_now_pick_of_day(True), SCMP_pick_of_day(True)])
+
+@app.route('/world-news-text', methods=['GET'])
+def scape_article10_text():
+
+    return jsonify([AP_pick_of_day(False), democracy_now_pick_of_day(False), SCMP_pick_of_day(False)])
 
 @app.route('/SCMP-pick-of-day', methods=['GET'])
 def scape_article11():
 
-    result = SCMP_pick_of_day()
+    result = SCMP_pick_of_day(True)
+
+    return jsonify(result)
+
+@app.route('/SCMP-pick-of-day-text', methods=['GET'])
+def scape_article11_text():
+
+    result = SCMP_pick_of_day(False)
 
     return jsonify(result)
 
 @app.route('/SCMP-china-top-story', methods=['GET'])
 def scape_article12():
 
-    result = SCMP_china()
+    result = SCMP_china(True)
+
+    return jsonify(result)
+
+@app.route('/SCMP-china-top-story-text', methods=['GET'])
+def scape_article12_text():
+
+    result = SCMP_china(False)
 
     return jsonify(result)
 
@@ -978,53 +1292,154 @@ def scape_article12():
 @app.route('/cosmo-style-pick-of-day', methods=['GET'])
 def scape_article13():
 
-    result = cosmo_style()
+    result = cosmo_style(True)
+
+    return jsonify(result)
+
+@app.route('/cosmo-style-pick-of-day-text', methods=['GET'])
+def scape_article13_text():
+
+    result = cosmo_style(False)
 
     return jsonify(result)
 
 @app.route('/fashion-news', methods=['GET'])
 def scape_article14():
 
-    return jsonify([vogue_pick_of_day(), cosmo_style()])
+    return jsonify([vogue_pick_of_day(True), cosmo_style(True)])
+
+@app.route('/fashion-news-text', methods=['GET'])
+def scape_article14_text():
+
+    return jsonify([vogue_pick_of_day(False), cosmo_style(False)])
 
 @app.route('/techcrunch-pick-of-day', methods=['GET'])
 def scape_article15():
 
-    result = techcrunch_pick_of_day()
+    result = techcrunch_pick_of_day(True)
+
+    return jsonify(result)
+
+@app.route('/techcrunch-pick-of-day-text', methods=['GET'])
+def scape_article15_text():
+
+    result = techcrunch_pick_of_day(False)
 
     return jsonify(result)
 
 @app.route('/zdnet-pick-of-day', methods=['GET'])
 def scape_article16():
 
-    result = zdnet_pick_of_day()
+    result = zdnet_pick_of_day(True)
+
+    return jsonify(result)
+
+@app.route('/zdnet-pick-of-day-text', methods=['GET'])
+def scape_article16_text():
+
+    result = zdnet_pick_of_day(False)
 
     return jsonify(result)
 
 @app.route('/tech-news', methods=['GET'])
 def scape_article17():
 
-    return jsonify([techcrunch_pick_of_day(), zdnet_pick_of_day(), wired_pick_of_day()])
+    return jsonify([techcrunch_pick_of_day(True), zdnet_pick_of_day(True), wired_pick_of_day(True)])
+
+@app.route('/tech-news-text', methods=['GET'])
+def scape_article17_text():
+
+    return jsonify([techcrunch_pick_of_day(False), zdnet_pick_of_day(False), wired_pick_of_day(False)])
 
 @app.route('/weather-channel-pick-of-day', methods=['GET'])
 def scape_article18():
 
-    result = weather_channel_pick_of_day()
+    result = weather_channel_pick_of_day(True)
+
+    return jsonify(result)
+
+@app.route('/weather-channel-pick-of-day-text', methods=['GET'])
+def scape_article18_text():
+
+    result = weather_channel_pick_of_day(False)
 
     return jsonify(result)
 
 @app.route('/weather-gov-pick-of-day', methods=['GET'])
 def scape_article19():
 
-    result = weather_gov_pick_of_day()
+    result = weather_gov_pick_of_day(True)
+
+    return jsonify(result)
+
+@app.route('/weather-gov-pick-of-day-text', methods=['GET'])
+def scape_article19_text():
+
+    result = weather_gov_pick_of_day(False)
 
     return jsonify(result)
 
 @app.route('/weather-news', methods=['GET'])
 def scape_article20():
 
-    return jsonify([weather_channel_pick_of_day(),weather_gov_pick_of_day()])
+    return jsonify([weather_channel_pick_of_day(True),weather_gov_pick_of_day(True)])
 
+@app.route('/weather-news-text', methods=['GET'])
+def scape_article20_text():
+
+    return jsonify([weather_channel_pick_of_day(False),weather_gov_pick_of_day(False)])
+
+@app.route('/yahoo-finance-pick-of-day', methods=['GET'])
+def scape_article21():
+
+    result = yahoo_finance_pick_of_day(True)
+
+    return jsonify(result)
+
+@app.route('/yahoo-finance-pick-of-day-text', methods=['GET'])
+def scape_article21_text():
+
+    result = yahoo_finance_pick_of_day(False)
+
+    return jsonify(result)
+
+@app.route('/economist-pick-of-day', methods=['GET'])
+def scape_article22():
+
+    result = economist_pick_of_day(True)
+
+    return jsonify(result)
+
+@app.route('/economist-pick-of-day-text', methods=['GET'])
+def scape_article22_text():
+
+    result = economist_pick_of_day(False)
+
+    return jsonify(result)
+
+@app.route('/forbes-pick-of-day', methods=['GET'])
+def scape_article23():
+
+    result = forbes_pick_of_day(True)
+
+    return jsonify(result)
+
+@app.route('/forbes-pick-of-day-text', methods=['GET'])
+def scape_article23_text():
+
+    result = forbes_pick_of_day(False)
+
+    return jsonify(result)
+
+@app.route('/finance-news', methods=['GET'])
+def scape_article24():
+
+    return jsonify([yahoo_finance_pick_of_day(True), economist_pick_of_day(True), forbes_pick_of_day(True)])
+
+@app.route('/finance-news-text', methods=['GET'])
+def scape_article24_text():
+
+    return jsonify([yahoo_finance_pick_of_day(False), economist_pick_of_day(False), forbes_pick_of_day(False)])
 
 if __name__ == '__main__':
     app.run(debug=True)
