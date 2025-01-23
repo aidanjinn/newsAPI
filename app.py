@@ -632,6 +632,113 @@ def cosmo_style():
     except requests.exceptions.RequestException as e:
         return {"error": f"An error occurred while fetching the data: {e}"}
 
+def techcrunch_pick_of_day():
+    url = "https://techcrunch.com/"
+
+    try:
+        # Send a GET request to the AP homepage
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception if the status code is not 200
+
+        # Parse the HTML content of the page using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find the main content div with the identified class
+        main_content_div = soup.find('div', attrs={
+            'class' : 'hero-package hero-package-2 wp-block-techcrunch-hero-package'})
+
+        if main_content_div:
+            # Now, find the first article or link within this div
+            main_content_div = main_content_div.find('h3', attrs = {'class' : 'loop-card__title'})
+            main_article_link = main_content_div.find('a', href=True)
+
+            if main_article_link:
+                article_link = main_article_link['href']
+
+                # Handle relative URLs by adding the base URL
+                if article_link.startswith('/'):
+                    article_link = 'https://techcrunch.com/' + article_link
+
+                # Send a GET request to the article page to extract the article text
+                article_response = requests.get(article_link)
+                article_response.raise_for_status()
+
+                # Parse the article page
+                article_soup = BeautifulSoup(article_response.content, 'html.parser')
+
+                # Extract article content (usually inside <p> tags)
+                paragraphs = article_soup.find_all('p')
+
+                # Join all paragraphs to get the full article text
+                article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
+
+                summary = summarize_article_with_gemini(article_text)
+
+                return {
+                    "article_link": article_link,
+                    "article_text": summary
+                }
+            else:
+                return {"error": "No article link found in the main content div."}
+        else:
+            return None
+
+    except requests.exceptions.RequestException as e:
+        return {"error": f"An error occurred while fetching the data: {e}"}
+
+def zdnet_pick_of_day():
+    url = "https://www.zdnet.com"
+
+    try:
+        # Send a GET request to the AP homepage
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception if the status code is not 200
+
+        # Parse the HTML content of the page using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find the main content div with the identified class
+        main_content_div = soup.find('div', attrs={
+            'class' : 'c-featureFeaturedStory'})
+
+        if main_content_div:
+            # Now, find the first article or link within this div
+            main_article_link = main_content_div.find('a', href=True)
+
+            if main_article_link:
+                article_link = main_article_link['href']
+
+                # Handle relative URLs by adding the base URL
+                if article_link.startswith('/'):
+                    article_link = 'https://www.zdnet.com' + article_link
+
+                # Send a GET request to the article page to extract the article text
+                article_response = requests.get(article_link)
+                article_response.raise_for_status()
+
+                # Parse the article page
+                article_soup = BeautifulSoup(article_response.content, 'html.parser')
+
+                # Extract article content (usually inside <p> tags)
+                paragraphs = article_soup.find_all('p')
+
+                # Join all paragraphs to get the full article text
+                article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
+
+                summary = summarize_article_with_gemini(article_text)
+
+                return {
+                    "article_link": article_link,
+                    "article_text": summary
+                }
+            else:
+                return {"error": "No article link found in the main content div."}
+        else:
+            return None
+
+    except requests.exceptions.RequestException as e:
+        return {"error": f"An error occurred while fetching the data: {e}"}
+
 # Function to summarize article using Gemini
 def summarize_article_with_gemini(article_text):
     prompt = (f"Summarize the following article into its main 5 points be concise and create the summary/points based on only the data"
@@ -744,6 +851,25 @@ def scape_article12():
 def scape_article13():
 
     return [vogue_pick_of_day(), cosmo_style()]
+
+@app.route('/techcrunch-pick-of-day', methods=['GET'])
+def scape_article14():
+
+    result = techcrunch_pick_of_day()
+
+    return jsonify(result)
+
+@app.route('/zdnet-pick-of-day', methods=['GET'])
+def scape_article15():
+
+    result = zdnet_pick_of_day()
+
+    return jsonify(result)
+
+@app.route('/tech-news', methods=['GET'])
+def scape_article16():
+
+    return [techcrunch_pick_of_day(), zdnet_pick_of_day(), wired_pick_of_day()]
 
 
 if __name__ == '__main__':
