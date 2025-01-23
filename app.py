@@ -5,6 +5,11 @@ import google.generativeai as genai
 
 
 '''
+I will later split the definitions into a different file
+just have the routes here for now deal with my poor organizational skills
+'''
+
+'''
 [JSON Object Fields]
 @ Website Link:
 @ Date:
@@ -312,8 +317,8 @@ def rolling_stone_pick_of_day():
     except requests.exceptions.RequestException as e:
         return {"error": f"An error occurred while fetching the data: {e}"}
 
-def yahoo_sports_pick_of_day():
-    url = "https://sports.yahoo.com/"
+def yahoo_sports_pick_of_day(url):
+
 
     try:
         # Send a GET request to the AP homepage
@@ -849,7 +854,6 @@ def weather_gov_pick_of_day():
 
 
 
-
 # Function to summarize article using Gemini
 def summarize_article_with_gemini(article_text):
     prompt = (f"Summarize the following article into its main 5 points be concise and create the summary/points based on only the data"
@@ -900,7 +904,7 @@ def scape_article4():
 @app.route('/yahoo-sports-pick-of-day', methods=['GET'])
 def scape_article5():
 
-    result = yahoo_sports_pick_of_day()
+    result = yahoo_sports_pick_of_day("https://sports.yahoo.com/")
 
     return jsonify(result)
 
@@ -915,7 +919,7 @@ def scape_article6():
 def scape_article7():
 
     breaking_news = yahoo_sports_breaking_news()
-    pick_of_day = yahoo_sports_pick_of_day()
+    pick_of_day = yahoo_sports_pick_of_day("https://sports.yahoo.com/")
 
     if breaking_news:
         result = [breaking_news, pick_of_day]
@@ -924,27 +928,47 @@ def scape_article7():
 
     return jsonify(result)
 
+
+@app.route('/yahoo-sports-recap', methods = ['GET'])
+def scrape_article8():
+
+    urls = [
+        "https://sports.yahoo.com/nfl/",
+        "https://sports.yahoo.com/college-football/",
+        "https://sports.yahoo.com/nba/",
+        "https://sports.yahoo.com/nhl/",
+        "https://sports.yahoo.com/college-basketball/",
+        "https://sports.yahoo.com/college-womens-basketball/",
+        "https://sports.yahoo.com/mlb/"
+    ]
+
+    result = []
+    for url in urls:
+        result.append(yahoo_sports_pick_of_day(url))
+
+    return jsonify(result)
+
 @app.route('/democracy-now-pick-of-day', methods=['GET'])
-def scape_article8():
+def scape_article9():
 
     result = democracy_now_pick_of_day()
 
     return jsonify(result)
 
 @app.route('/world-news', methods=['GET'])
-def scape_article9():
+def scape_article10():
 
     return jsonify([AP_pick_of_day(), democracy_now_pick_of_day(), SCMP_pick_of_day()])
 
 @app.route('/SCMP-pick-of-day', methods=['GET'])
-def scape_article10():
+def scape_article11():
 
     result = SCMP_pick_of_day()
 
     return jsonify(result)
 
 @app.route('/SCMP-china-top-story', methods=['GET'])
-def scape_article11():
+def scape_article12():
 
     result = SCMP_china()
 
@@ -952,52 +976,52 @@ def scape_article11():
 
 
 @app.route('/cosmo-style-pick-of-day', methods=['GET'])
-def scape_article12():
+def scape_article13():
 
     result = cosmo_style()
 
     return jsonify(result)
 
 @app.route('/fashion-news', methods=['GET'])
-def scape_article13():
+def scape_article14():
 
     return jsonify([vogue_pick_of_day(), cosmo_style()])
 
 @app.route('/techcrunch-pick-of-day', methods=['GET'])
-def scape_article14():
+def scape_article15():
 
     result = techcrunch_pick_of_day()
 
     return jsonify(result)
 
 @app.route('/zdnet-pick-of-day', methods=['GET'])
-def scape_article15():
+def scape_article16():
 
     result = zdnet_pick_of_day()
 
     return jsonify(result)
 
 @app.route('/tech-news', methods=['GET'])
-def scape_article16():
+def scape_article17():
 
     return jsonify([techcrunch_pick_of_day(), zdnet_pick_of_day(), wired_pick_of_day()])
 
 @app.route('/weather-channel-pick-of-day', methods=['GET'])
-def scape_article17():
+def scape_article18():
 
     result = weather_channel_pick_of_day()
 
     return jsonify(result)
 
 @app.route('/weather-gov-pick-of-day', methods=['GET'])
-def scape_article18():
+def scape_article19():
 
     result = weather_gov_pick_of_day()
 
     return jsonify(result)
 
 @app.route('/weather-news', methods=['GET'])
-def scape_article19():
+def scape_article20():
 
     return jsonify([weather_channel_pick_of_day(),weather_gov_pick_of_day()])
 
