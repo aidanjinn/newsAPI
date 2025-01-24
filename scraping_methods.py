@@ -1,4 +1,3 @@
-
 import requests
 from bs4 import BeautifulSoup
 import google.generativeai as genai
@@ -95,7 +94,7 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 '''
 
 
-def vogue_pick_of_day(ai):
+def vogue_pick_of_day(ai, language = "English"):
     url = "https://www.vogue.com/fashion"
 
     try:
@@ -134,7 +133,7 @@ def vogue_pick_of_day(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -152,7 +151,7 @@ def vogue_pick_of_day(ai):
 
 
 # Function to scrape the second article from Wired's "Today’s Picks"
-def wired_pick_of_day(ai):
+def wired_pick_of_day(ai, language = "English"):
     url = "https://www.wired.com/"
 
     try:
@@ -195,7 +194,7 @@ def wired_pick_of_day(ai):
                     article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                     if ai:
-                        summary = summarize_article_with_gemini(article_text)
+                        summary = summarize_article_with_gemini(article_text, language)
                     else:
                         summary = article_text
 
@@ -215,7 +214,7 @@ def wired_pick_of_day(ai):
 
 
 # Function to scrape the front page article from AP
-def AP_pick_of_day(ai):
+def AP_pick_of_day(ai, language = "English"):
     url = "https://apnews.com/"
 
     try:
@@ -254,7 +253,7 @@ def AP_pick_of_day(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -271,7 +270,7 @@ def AP_pick_of_day(ai):
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
-def rolling_stone_pick_of_day(ai):
+def rolling_stone_pick_of_day(ai, language = "English"):
     url = "https://www.rollingstone.com/tv-movies/"
 
     try:
@@ -311,7 +310,7 @@ def rolling_stone_pick_of_day(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -328,7 +327,7 @@ def rolling_stone_pick_of_day(ai):
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
-def yahoo_sports_pick_of_day(url, ai):
+def yahoo_sports_pick_of_day(url, ai, language = "English"):
     try:
         # Send a GET request to the AP homepage
         response = requests.get(url)
@@ -366,7 +365,7 @@ def yahoo_sports_pick_of_day(url, ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -383,7 +382,7 @@ def yahoo_sports_pick_of_day(url, ai):
         return None
 
 
-def yahoo_sports_breaking_news(ai):
+def yahoo_sports_breaking_news(ai, language = "English"):
     url = "https://sports.yahoo.com/"
 
     try:
@@ -423,7 +422,7 @@ def yahoo_sports_breaking_news(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -440,7 +439,7 @@ def yahoo_sports_breaking_news(ai):
         return None
 
 
-def democracy_now_pick_of_day(ai):
+def democracy_now_pick_of_day(ai, language = "English"):
     url = "https://www.democracynow.org"
 
     try:
@@ -480,7 +479,7 @@ def democracy_now_pick_of_day(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -498,7 +497,7 @@ def democracy_now_pick_of_day(ai):
 
 
 # Chinese New Publication
-def SCMP_pick_of_day(ai):
+def SCMP_pick_of_day(ai, language = "English"):
     url = "https://www.scmp.com"
 
     try:
@@ -538,7 +537,7 @@ def SCMP_pick_of_day(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -556,7 +555,7 @@ def SCMP_pick_of_day(ai):
 
 
 # Chinese New Publication
-def SCMP_china(ai):
+def SCMP_china(ai, language = "English"):
     url = "https://www.scmp.com/news/china"
 
     try:
@@ -596,7 +595,7 @@ def SCMP_china(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -613,7 +612,7 @@ def SCMP_china(ai):
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
-def cosmo_style(ai):
+def cosmo_style(ai, language = "English"):
     url = "https://www.cosmopolitan.com/style-beauty/fashion/"
 
     try:
@@ -653,7 +652,7 @@ def cosmo_style(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -670,7 +669,7 @@ def cosmo_style(ai):
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
-def techcrunch_pick_of_day(ai):
+def techcrunch_pick_of_day(ai, language = "English"):
     url = "https://techcrunch.com/"
 
     try:
@@ -711,7 +710,7 @@ def techcrunch_pick_of_day(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -728,7 +727,7 @@ def techcrunch_pick_of_day(ai):
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
-def zdnet_pick_of_day(ai):
+def zdnet_pick_of_day(ai, language = "English"):
     url = "https://www.zdnet.com"
 
     try:
@@ -768,7 +767,7 @@ def zdnet_pick_of_day(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -785,7 +784,7 @@ def zdnet_pick_of_day(ai):
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
-def weather_channel_pick_of_day(ai):
+def weather_channel_pick_of_day(ai, language = "English"):
     url = "https://weather.com"
 
     try:
@@ -825,7 +824,7 @@ def weather_channel_pick_of_day(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -842,7 +841,7 @@ def weather_channel_pick_of_day(ai):
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
-def weather_gov_pick_of_day(ai):
+def weather_gov_pick_of_day(ai, language = "English"):
     url = "https://www.weather.gov/"
 
     try:
@@ -883,7 +882,7 @@ def weather_gov_pick_of_day(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -900,7 +899,7 @@ def weather_gov_pick_of_day(ai):
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
-def yahoo_finance_pick_of_day(ai):
+def yahoo_finance_pick_of_day(ai, language = "English"):
     url = "https://finance.yahoo.com/"
 
     try:
@@ -940,7 +939,7 @@ def yahoo_finance_pick_of_day(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -957,7 +956,7 @@ def yahoo_finance_pick_of_day(ai):
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
-def economist_pick_of_day(ai):
+def economist_pick_of_day(ai, language = "English"):
     url = "https://www.economist.com/"
 
     try:
@@ -997,7 +996,7 @@ def economist_pick_of_day(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -1014,7 +1013,7 @@ def economist_pick_of_day(ai):
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
-def forbes_pick_of_day(ai):
+def forbes_pick_of_day(ai, language = "English"):
     url = "https://www.forbes.com/"
 
     try:
@@ -1054,7 +1053,7 @@ def forbes_pick_of_day(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -1071,7 +1070,7 @@ def forbes_pick_of_day(ai):
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
-def people_pick_of_day(ai):
+def people_pick_of_day(ai, language = "English"):
     url = "https://people.com/"
 
     try:
@@ -1113,7 +1112,7 @@ def people_pick_of_day(ai):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text)
+                    summary = summarize_article_with_gemini(article_text, language)
                 else:
                     summary = article_text
 
@@ -1131,11 +1130,11 @@ def people_pick_of_day(ai):
 
 
 # Function to summarize article using Gemini
-def summarize_article_with_gemini(article_text):
+def summarize_article_with_gemini(article_text, language):
     prompt = (
         f"Summarize the following article into its main 5 points be concise and create the summary/points based on only the data"
         f"provided to you. Do not make up any information only use what I give you. Do not start your response with a response to my prompt"
-        f"Only Give the Summary::\n\n{article_text}")
+        f"Only Give the Summary. (In the language:{language}, do not respond to this in response)::\n\n{article_text}")
     try:
         response = model.generate_content(prompt)
         summary = response.text.strip()

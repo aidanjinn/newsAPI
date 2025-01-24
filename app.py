@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from scraping_methods import *
 
 '''
@@ -9,12 +9,38 @@ from scraping_methods import *
 
 app = Flask(__name__)
 
+supported_languages = [
+    'english', 'spanish', 'french', 'chinese', 'japanese', 'hindi', 'arabic', 'portuguese',
+    'russian', 'german', 'italian', 'korean', 'bulgarian', 'croatian', 'czech', 'danish',
+    'dutch', 'swedish', 'norwegian', 'finnish', 'polish', 'bengali', 'greek', 'thai',
+    'vietnamese', 'indonesian', 'hebrew', 'turkish', 'ukrainian', 'romanian', 'slovak',
+    'slovenian', 'serbian', 'bosnian', 'hungarian', 'tagalog', 'urdu', 'swahili', 'amharic',
+    'somali', 'haitian creole', 'lao', 'khmer', 'burmese', 'sinhalese', 'malay',
+    'macedonian'
+]
+
+
 @app.route('/wired-pick-of-day', methods=['GET'])
 def scrape_article():
-    # Call the scraping function
-    result = wired_pick_of_day(True)
-    # Return the result as a JSON response
-    return jsonify(result)
+
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = wired_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route('/wired-pick-of-day-text', methods=['GET'])
 def scrape_article_text():
@@ -26,9 +52,23 @@ def scrape_article_text():
 @app.route('/AP-pick-of-day', methods=['GET'])
 def scape_article2():
 
-    result = AP_pick_of_day(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = AP_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/AP-pick-of-day-text', methods=['GET'])
 def scrape_article2_text():
@@ -40,9 +80,23 @@ def scrape_article2_text():
 @app.route('/vogue-pick-of-day', methods=['GET'])
 def scape_article3():
 
-    result = vogue_pick_of_day(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = vogue_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/vogue-pick-of-day-text', methods=['GET'])
 def scape_article3_text():
@@ -54,9 +108,23 @@ def scape_article3_text():
 @app.route('/rolling-stone-movies-tv-pick-of-day', methods=['GET'])
 def scape_article4():
 
-    result = rolling_stone_pick_of_day(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = rolling_stone_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/rolling-stone-movies-tv-pick-of-day-text', methods=['GET'])
 def scape_article4_text():
@@ -68,9 +136,23 @@ def scape_article4_text():
 @app.route('/yahoo-sports-pick-of-day', methods=['GET'])
 def scape_article5():
 
-    result = yahoo_sports_pick_of_day("https://sports.yahoo.com/", True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = yahoo_sports_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/yahoo-sports-pick-of-day-text', methods=['GET'])
 def scape_article5_text():
@@ -82,9 +164,23 @@ def scape_article5_text():
 @app.route('/yahoo-sports-breaking-news', methods=['GET'])
 def scape_article6():
 
-    result = yahoo_sports_breaking_news(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = yahoo_sports_breaking_news(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/yahoo-sports-breaking-news-text', methods=['GET'])
 def scape_article6_text():
@@ -96,15 +192,23 @@ def scape_article6_text():
 @app.route('/yahoo-sports', methods=['GET'])
 def scape_article7():
 
-    breaking_news = yahoo_sports_breaking_news(True)
-    pick_of_day = yahoo_sports_pick_of_day("https://sports.yahoo.com/",True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    if breaking_news:
-        result = [breaking_news, pick_of_day]
-    else:
-        result = [pick_of_day]
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
-    return jsonify(result)
+        # Fetch breaking news and pick of the day in the specified language
+        breaking_news = yahoo_sports_breaking_news(True, language)
+        pick_of_day = yahoo_sports_pick_of_day("https://sports.yahoo.com/", True, language)
+
+        # Combine results, include breaking news only if it's available
+        result = [breaking_news, pick_of_day] if breaking_news else [pick_of_day]
+
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/yahoo-sports-text', methods=['GET'])
 def scape_article7_text():
@@ -133,11 +237,25 @@ def scrape_article8():
         "https://sports.yahoo.com/mlb/"
     ]
 
-    result = []
-    for url in urls:
-        result.append(yahoo_sports_pick_of_day(url,True))
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = []
+        for url in urls:
+            result.append(yahoo_sports_pick_of_day(url, True, language))
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route('/yahoo-sports-recap-text', methods = ['GET'])
@@ -162,9 +280,23 @@ def scrape_article8_text():
 @app.route('/democracy-now-pick-of-day', methods=['GET'])
 def scape_article9():
 
-    result = democracy_now_pick_of_day(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = democracy_now_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/democracy-now-pick-of-day-text', methods=['GET'])
 def scape_article9_text():
@@ -176,7 +308,23 @@ def scape_article9_text():
 @app.route('/world-news', methods=['GET'])
 def scape_article10():
 
-    return jsonify([AP_pick_of_day(True), democracy_now_pick_of_day(True), SCMP_pick_of_day(True)])
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = [AP_pick_of_day(True, language), democracy_now_pick_of_day(True, language), SCMP_pick_of_day(True, language)]
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/world-news-text', methods=['GET'])
 def scape_article10_text():
@@ -186,9 +334,23 @@ def scape_article10_text():
 @app.route('/SCMP-pick-of-day', methods=['GET'])
 def scape_article11():
 
-    result = SCMP_pick_of_day(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = SCMP_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/SCMP-pick-of-day-text', methods=['GET'])
 def scape_article11_text():
@@ -200,9 +362,23 @@ def scape_article11_text():
 @app.route('/SCMP-china-top-story', methods=['GET'])
 def scape_article12():
 
-    result = SCMP_china(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = SCMP_china(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/SCMP-china-top-story-text', methods=['GET'])
 def scape_article12_text():
@@ -215,9 +391,23 @@ def scape_article12_text():
 @app.route('/cosmo-style-pick-of-day', methods=['GET'])
 def scape_article13():
 
-    result = cosmo_style(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = cosmo_style(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/cosmo-style-pick-of-day-text', methods=['GET'])
 def scape_article13_text():
@@ -229,7 +419,23 @@ def scape_article13_text():
 @app.route('/fashion-news', methods=['GET'])
 def scape_article14():
 
-    return jsonify([vogue_pick_of_day(True), cosmo_style(True)])
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = [vogue_pick_of_day(True, language), cosmo_style(True, language)]
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/fashion-news-text', methods=['GET'])
 def scape_article14_text():
@@ -239,9 +445,23 @@ def scape_article14_text():
 @app.route('/techcrunch-pick-of-day', methods=['GET'])
 def scape_article15():
 
-    result = techcrunch_pick_of_day(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = techcrunch_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/techcrunch-pick-of-day-text', methods=['GET'])
 def scape_article15_text():
@@ -253,9 +473,23 @@ def scape_article15_text():
 @app.route('/zdnet-pick-of-day', methods=['GET'])
 def scape_article16():
 
-    result = zdnet_pick_of_day(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = zdnet_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/zdnet-pick-of-day-text', methods=['GET'])
 def scape_article16_text():
@@ -267,7 +501,25 @@ def scape_article16_text():
 @app.route('/tech-news', methods=['GET'])
 def scape_article17():
 
-    return jsonify([techcrunch_pick_of_day(True), zdnet_pick_of_day(True), wired_pick_of_day(True)])
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = [techcrunch_pick_of_day(True, language), zdnet_pick_of_day(True, language), wired_pick_of_day(True, language)]
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 @app.route('/tech-news-text', methods=['GET'])
 def scape_article17_text():
@@ -277,9 +529,23 @@ def scape_article17_text():
 @app.route('/weather-channel-pick-of-day', methods=['GET'])
 def scape_article18():
 
-    result = weather_channel_pick_of_day(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = weather_channel_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/weather-channel-pick-of-day-text', methods=['GET'])
 def scape_article18_text():
@@ -291,9 +557,23 @@ def scape_article18_text():
 @app.route('/weather-gov-pick-of-day', methods=['GET'])
 def scape_article19():
 
-    result = weather_gov_pick_of_day(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = weather_gov_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/weather-gov-pick-of-day-text', methods=['GET'])
 def scape_article19_text():
@@ -305,7 +585,25 @@ def scape_article19_text():
 @app.route('/weather-news', methods=['GET'])
 def scape_article20():
 
-    return jsonify([weather_channel_pick_of_day(True),weather_gov_pick_of_day(True)])
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = [weather_channel_pick_of_day(True, language),weather_gov_pick_of_day(True, language)]
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 @app.route('/weather-news-text', methods=['GET'])
 def scape_article20_text():
@@ -315,9 +613,23 @@ def scape_article20_text():
 @app.route('/yahoo-finance-pick-of-day', methods=['GET'])
 def scape_article21():
 
-    result = yahoo_finance_pick_of_day(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = yahoo_finance_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/yahoo-finance-pick-of-day-text', methods=['GET'])
 def scape_article21_text():
@@ -328,10 +640,23 @@ def scape_article21_text():
 
 @app.route('/economist-pick-of-day', methods=['GET'])
 def scape_article22():
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    result = economist_pick_of_day(True)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
-    return jsonify(result)
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = economist_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/economist-pick-of-day-text', methods=['GET'])
 def scape_article22_text():
@@ -343,9 +668,23 @@ def scape_article22_text():
 @app.route('/forbes-pick-of-day', methods=['GET'])
 def scape_article23():
 
-    result = forbes_pick_of_day(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = forbes_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/forbes-pick-of-day-text', methods=['GET'])
 def scape_article23_text():
@@ -356,8 +695,24 @@ def scape_article23_text():
 
 @app.route('/finance-news', methods=['GET'])
 def scape_article24():
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify([yahoo_finance_pick_of_day(True), economist_pick_of_day(True), forbes_pick_of_day(True)])
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = [yahoo_finance_pick_of_day(True, language), economist_pick_of_day(True, language), forbes_pick_of_day(True, language)]
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route('/finance-news-text', methods=['GET'])
 def scape_article24_text():
@@ -367,9 +722,23 @@ def scape_article24_text():
 @app.route('/people-pick-of-day', methods=['GET'])
 def scape_article25():
 
-    result = people_pick_of_day(True)
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
 
-    return jsonify(result)
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = people_pick_of_day(True, language)
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/people-pick-of-day-text', methods=['GET'])
 def scape_article25_text():
@@ -377,6 +746,28 @@ def scape_article25_text():
     result = people_pick_of_day(False)
 
     return jsonify(result)
+
+@app.route('/entertainment-news', methods=['GET'])
+def scape_article26():
+
+    try:
+        # Get the language query parameter, default to 'english'
+        language = request.args.get('language', default='english').lower()
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        # Default Behavior is AI-SUM ON; ENGLISH
+        result = [rolling_stone_pick_of_day(True, language), people_pick_of_day(True, language)]
+
+        if result:
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 
 if __name__ == '__main__':
