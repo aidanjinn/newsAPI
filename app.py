@@ -235,7 +235,7 @@ def scrape_article8():
         "https://sports.yahoo.com/college-basketball/",
         "https://sports.yahoo.com/college-womens-basketball/",
         "https://sports.yahoo.com/mlb/",
-        "https://sports.yahoo.com/soccer/",
+        #"https://sports.yahoo.com/soccer/",
         "https://sports.yahoo.com/tennis/",
         "https://sports.yahoo.com/golf/"
     ]
