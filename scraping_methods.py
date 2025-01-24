@@ -336,9 +336,13 @@ def yahoo_sports_pick_of_day(url, ai, language = "English"):
         # Parse the HTML content of the page using BeautifulSoup
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        # Find the main content div with the identified class
-        main_content_div = soup.find('div', attrs={
-            'class': '_ys_1unhdgw _ys_1kkgpmk'})
+        # these sports pages are done slightly differently
+        if url == "https://sports.yahoo.com/tennis/" or url == "https://sports.yahoo.com/golf/":
+            # Find the main content div with the identified class
+            main_content_div =  soup.find('div', attrs={'class' : '_ys_1unhdgw _ys_1x7t0np'})
+        else:
+            main_content_div = soup.find('div', attrs={
+                'class': '_ys_1unhdgw _ys_1kkgpmk'})
 
         if main_content_div:
             # Now, find the first article or link within this div
