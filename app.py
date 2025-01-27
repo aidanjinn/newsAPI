@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from scraping_methods import *
+from flask_cors import CORS
 
 '''
 [JSON Object Fields]
@@ -9,6 +10,8 @@ from scraping_methods import *
 
 app = Flask(__name__)
 
+CORS(app)
+
 supported_languages = [
     'english', 'spanish', 'french', 'chinese', 'japanese', 'hindi', 'arabic', 'portuguese',
     'russian', 'german', 'italian', 'korean', 'bulgarian', 'croatian', 'czech', 'danish',
@@ -16,7 +19,7 @@ supported_languages = [
     'vietnamese', 'indonesian', 'hebrew', 'turkish', 'ukrainian', 'romanian', 'slovak',
     'slovenian', 'serbian', 'bosnian', 'hungarian', 'tagalog', 'urdu', 'swahili', 'amharic',
     'somali', 'haitian creole', 'lao', 'khmer', 'burmese', 'sinhalese', 'malay',
-    'macedonian'
+    'macedonian', 'pidgin', 'catalon', 'flemish', 'dutch', 'afrikaans'
 ]
 
 
@@ -773,6 +776,7 @@ def scape_article26():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 
 
