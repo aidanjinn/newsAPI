@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import google.generativeai as genai
+from dotenv import load_dotenv
+import os
+
 
 '''
 I will later split the definitions into a different file
@@ -16,14 +19,11 @@ just have the routes here for now deal with my poor organizational skills
 '''
 
 '''
-    I know this is bad practice but the LLM will be switched out with something else
-    in the future so for now my lack of security is a future problem.
-'''
-api = "AIzaSyApYeEExoKk12vDdglSOmLwGD7QC_HX2Bg"
-
-'''
     This model works fine but pinging it is sometimes slow
 '''
+load_dotenv()
+api = os.getenv('API_KEY')
+
 genai.configure(api_key=api)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
