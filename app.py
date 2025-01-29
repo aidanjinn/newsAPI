@@ -1,4 +1,7 @@
 from flask import Flask, jsonify, request, render_template
+import asyncio
+import aiohttp
+from concurrent.futures import ThreadPoolExecutor
 
 from scraping_methods import *
 from flask_cors import CORS
@@ -289,7 +292,6 @@ def scape_article7_text():
 
 @app.route('/yahoo-sports-recap', methods = ['GET'])
 def scrape_article8():
-
     urls = [
         "https://sports.yahoo.com/nfl/",
         "https://sports.yahoo.com/college-football/",
@@ -298,31 +300,31 @@ def scrape_article8():
         "https://sports.yahoo.com/college-basketball/",
         "https://sports.yahoo.com/college-womens-basketball/",
         "https://sports.yahoo.com/mlb/"
-        #"https://sports.yahoo.com/soccer/",
-        # "https://sports.yahoo.com/tennis/",
-        # "https://sports.yahoo.com/golf/"
     ]
 
     try:
-        # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
-
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
-        # Default Behavior is AI-SUM ON; ENGLISH
-        result = []
-        for url in urls:
-            result.append(yahoo_sports_pick_of_day(url, True, language))
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        results = loop.run_until_complete(fetch_yahoo_sports_recap(urls, language))
+        loop.close()
 
-        if result:
-            return jsonify(result)
+        if results:
+            return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+async def fetch_yahoo_sports_recap(urls, language):
+    async def fetch_article(url):
+        return await asyncio.to_thread(yahoo_sports_pick_of_day, url, True, language)
+    
+    tasks = [fetch_article(url) for url in urls]
+    return await asyncio.gather(*tasks)
 
 @app.route('/yahoo-sports-recap-text', methods = ['GET'])
 def scrape_article8_text():
@@ -376,24 +378,33 @@ def scape_article9_text():
 
 @app.route('/world-news', methods=['GET'])
 def scape_article10():
-
     try:
-        # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
-
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
-        # Default Behavior is AI-SUM ON; ENGLISH
-        result = [AP_pick_of_day(True, language), democracy_now_pick_of_day(True, language), SCMP_pick_of_day(True, language)]
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        results = loop.run_until_complete(fetch_world_news(language))
+        loop.close()
 
-        if result:
-            return jsonify(result)
+        if results:
+            return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+async def fetch_world_news(language):
+    async def fetch_article(func, *args):
+        return await asyncio.to_thread(func, *args)
+    
+    tasks = [
+        fetch_article(AP_pick_of_day, True, language),
+        fetch_article(democracy_now_pick_of_day, True, language),
+        fetch_article(SCMP_pick_of_day, True, language)
+    ]
+    return await asyncio.gather(*tasks)
 
 @app.route('/world-news-text', methods=['GET'])
 def scape_article10_text():
@@ -487,24 +498,32 @@ def scape_article13_text():
 
 @app.route('/fashion-news', methods=['GET'])
 def scape_article14():
-
     try:
-        # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
-
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
-        # Default Behavior is AI-SUM ON; ENGLISH
-        result = [vogue_pick_of_day(True, language), cosmo_style(True, language)]
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        results = loop.run_until_complete(fetch_fashion_news(language))
+        loop.close()
 
-        if result:
-            return jsonify(result)
+        if results:
+            return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+async def fetch_fashion_news(language):
+    async def fetch_article(func, *args):
+        return await asyncio.to_thread(func, *args)
+    
+    tasks = [
+        fetch_article(vogue_pick_of_day, True, language),
+        fetch_article(cosmo_style, True, language)
+    ]
+    return await asyncio.gather(*tasks)
 
 @app.route('/fashion-news-text', methods=['GET'])
 def scape_article14_text():
@@ -570,18 +589,29 @@ def scape_article17():
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
-        # Default Behavior is AI-SUM ON; ENGLISH
-        result = [techcrunch_pick_of_day(True, language), zdnet_pick_of_day(True, language), wired_pick_of_day(True, language)]
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        results = loop.run_until_complete(fetch_tech_news(language))
+        loop.close()
 
-        if result:
-            return jsonify(result)
+        if results:
+            return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
+async def fetch_tech_news(language):
+    async def fetch_article(func, *args):
+        return await asyncio.to_thread(func, *args)
+    
+    tasks = [
+        fetch_article(techcrunch_pick_of_day, True, language),
+        fetch_article(zdnet_pick_of_day, True, language),
+        fetch_article(wired_pick_of_day, True, language)
+    ]
+    return await asyncio.gather(*tasks)
 
 @app.route('/tech-news-text', methods=['GET'])
 def scape_article17_text():
@@ -654,18 +684,27 @@ def scape_article20():
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
-        # Default Behavior is AI-SUM ON; ENGLISH
-        result = [weather_channel_pick_of_day(True, language),weather_gov_pick_of_day(True, language)]
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        results = loop.run_until_complete(fetch_weather_news(language))
+        loop.close()
 
-        if result:
-            return jsonify(result)
+        if results:
+            return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
+async def fetch_weather_news(language):
+    async def fetch_article(func, *args):
+        return await asyncio.to_thread(func, *args)
+    
+    tasks = [
+        fetch_article(weather_channel_pick_of_day, True, language),
+        fetch_article(weather_gov_pick_of_day, True, language)
+    ]
+    return await asyncio.gather(*tasks)
 
 @app.route('/weather-news-text', methods=['GET'])
 def scape_article20_text():
@@ -764,17 +803,28 @@ def scape_article24():
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
-        # Default Behavior is AI-SUM ON; ENGLISH
-        result = [yahoo_finance_pick_of_day(True, language), economist_pick_of_day(True, language), forbes_pick_of_day(True, language)]
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        results = loop.run_until_complete(fetch_finance_news(language))
+        loop.close()
 
-        if result:
-            return jsonify(result)
+        if results:
+            return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+async def fetch_finance_news(language):
+    async def fetch_article(func, *args):
+        return await asyncio.to_thread(func, *args)
+    
+    tasks = [
+        fetch_article(yahoo_finance_pick_of_day, True, language),
+        fetch_article(economist_pick_of_day, True, language),
+        fetch_article(forbes_pick_of_day, True, language)
+    ]
+    return await asyncio.gather(*tasks)
 
 @app.route('/finance-news-text', methods=['GET'])
 def scape_article24_text():
@@ -819,19 +869,33 @@ def scape_article26():
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
-        # Default Behavior is AI-SUM ON; ENGLISH
-        result = [rolling_stone_pick_of_day(True, language), people_pick_of_day(True, language)]
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        results = loop.run_until_complete(fetch_entertainment_news(language))
+        loop.close()
 
-        if result:
-            return jsonify(result)
+        if results:
+            return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+async def fetch_entertainment_news(language):
+    async def fetch_article(func, *args):
+        return await asyncio.to_thread(func, *args)
+    
+    tasks = [
+        fetch_article(rolling_stone_pick_of_day, True, language),
+        fetch_article(people_pick_of_day, True, language)
+    ]
+    return await asyncio.gather(*tasks)
 
+@app.route('/entertainment-news-text', methods=['GET'])
+def scape_article26_text():
 
+    return jsonify([rolling_stone_pick_of_day(False), people_pick_of_day(False)])
 
 if __name__ == '__main__':
     app.run(debug=True)
