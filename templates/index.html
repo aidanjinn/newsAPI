@@ -133,7 +133,62 @@
         @media (max-width: 768px) {
             .controls-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
+
+            .controls {
+                padding: 1rem;
+                margin: 1rem;
+                width: auto;
+            }
+
+            select, button {
+                width: 100%;
+                max-width: 100%;
+                min-width: 0;
+            }
+
+            .theme-toggle {
+                position: fixed;
+                top: 0.5rem;
+                right: 0.5rem;
+                padding: 0.5rem;
+                font-size: 0.9rem;
+                z-index: 1000;
+                width: auto;
+            }
+
+            .container {
+                padding: 1rem;
+                margin-top: 3rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+                margin: 0.5rem 0 1rem 0;
+            }
+
+            .input-group {
+                width: 100%;
+            }
+
+            select {
+                padding: 0.75rem;
+                font-size: 16px; /* Prevents iOS zoom on focus */
+            }
+        }
+
+        /* Add these new styles */
+        .controls {
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        select, button {
+            box-sizing: border-box;
+        }
 
             button {
                 width: 100%;
@@ -147,7 +202,6 @@
                 font-size: 2rem;
                 margin-bottom: 1.5rem;
             }
-        }
 
         .container {
             max-width: 1200px;

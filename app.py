@@ -383,9 +383,13 @@ def scape_article10():
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
+        # Creation of new event loop: manager handles and coordinates mult tasks
         loop = asyncio.new_event_loop()
+        # Tells python to use this loop as the current event loop for the thread
         asyncio.set_event_loop(loop)
+        # Run the event loop until it reaches completion in this case fetch_world_news
         results = loop.run_until_complete(fetch_world_news(language))
+        # then we clean up the loop
         loop.close()
 
         if results:
@@ -395,15 +399,27 @@ def scape_article10():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+'''
+    Async function for fetching news articles in the world news category
+        This pattern allows for all news sources to be fetched and run
+        simultaneously rather than one after another, reducing the total
+        response time: This was done in order to cut down on awaiting
+        LLM response from prompt request.
+'''
 async def fetch_world_news(language):
+    
+    # helper function that takes any sync function and it arguments
     async def fetch_article(func, *args):
+        # runs the sync function in a thread and returns its result
         return await asyncio.to_thread(func, *args)
     
+    # these are the list of tasks to run concurrently
     tasks = [
         fetch_article(AP_pick_of_day, True, language),
         fetch_article(democracy_now_pick_of_day, True, language),
         fetch_article(SCMP_pick_of_day, True, language)
     ]
+    # gather here runs all the tasks concurrently and then waits for their completion
     return await asyncio.gather(*tasks)
 
 @app.route('/world-news-text', methods=['GET'])
