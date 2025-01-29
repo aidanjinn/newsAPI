@@ -973,7 +973,7 @@ def economist_pick_of_day(ai, language = "English"):
 
         # Find the main content div with the identified class
         main_content_div = soup.find('section', attrs={
-            'id': 'new-relic-top-stories', 'class': 'css-gbdfxv eeawncf0'})
+            'id': 'new-relic-top-stories'})
 
         if main_content_div:
             # Now, find the first article or link within this div

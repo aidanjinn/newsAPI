@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask API Frontend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .dropdowns {
+            margin-bottom: 20px;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .result-item {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .result-item a {
+            font-weight: bold;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .result-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Flask API Frontend</h1>
+        <div class="dropdowns">
+            <label for="route">Select Route:</label>
+            <select id="route">
+                {% for route in supported_routes %}
+                    <option value="{{ route }}">{{ route }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="language">Select Language:</label>
+            <select id="language">
+                {% for language in supported_languages %}
+                    <option value="{{ language }}">{{ language }}</option>
+                {% endfor %}
+            </select>
+
+            <button onclick="queryAPI()">Query</button>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function queryAPI() {
+        const route = document.getElementById('route').value;
+        const language = document.getElementById('language').value;
+        const resultDiv = document.getElementById('result');
+
+        // Clear previous results
+        resultDiv.innerHTML = '';
+
+        // Make the API request
+        fetch(`${route}?language=${language}`)
+            .then(response => response.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    data.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'result-item';
+                        itemDiv.innerHTML = `
+                            <a href="${item.article_link}" target="_blank">${item.article_link}</a>
+                            <p>${item.article_text}</p>
+                        `;
+                        resultDiv.appendChild(itemDiv);
+                    });
+                } else {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'result-item';
+                    itemDiv.innerHTML = `
+                        <a href="${data.article_link}" target="_blank">${data.article_link}</a>
+                        <p>${data.article_text}</p>
+                    `;
+                    resultDiv.appendChild(itemDiv);
+            }
+        })
+        .catch(error => {
+            resultDiv.innerHTML = `<div class="result-item">Error: ${error.message}</div>`;
+        });
+    }
+    </script>
+</body>
+</html>

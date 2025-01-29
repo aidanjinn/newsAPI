@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
+
 from scraping_methods import *
 from flask_cors import CORS
 
@@ -21,6 +22,65 @@ supported_languages = [
     'somali', 'haitian creole', 'lao', 'khmer', 'burmese', 'sinhalese', 'malay',
     'macedonian', 'pidgin', 'catalon', 'flemish', 'dutch', 'afrikaans'
 ]
+
+# new main page route for easier testing
+@app.route('/', methods=['GET'])
+def index():
+    # List of supported routes (you can dynamically generate this if needed)
+    supported_routes = [
+        '/wired-pick-of-day',
+      
+        '/AP-pick-of-day',
+       
+        '/vogue-pick-of-day',
+       
+        '/rolling-stone-movies-tv-pick-of-day',
+     
+        '/yahoo-sports-pick-of-day',
+       
+        '/yahoo-sports-breaking-news',
+       
+        '/yahoo-sports',
+      
+        '/yahoo-sports-recap',
+     
+        '/democracy-now-pick-of-day',
+       
+        '/world-news',
+  
+        '/SCMP-pick-of-day',
+      
+        '/SCMP-china-top-story',
+  
+        '/cosmo-style-pick-of-day',
+      
+        '/fashion-news',
+     
+        '/techcrunch-pick-of-day',
+     
+        '/zdnet-pick-of-day',
+
+        '/tech-news',
+      
+        '/weather-channel-pick-of-day',
+     
+        '/weather-gov-pick-of-day',
+
+        '/weather-news',
+    
+        '/yahoo-finance-pick-of-day',
+      
+        '/economist-pick-of-day',
+       
+        '/forbes-pick-of-day',
+  
+        '/finance-news',
+   
+        '/people-pick-of-day',
+    
+        '/entertainment-news'
+    ] 
+    return render_template('index.html', supported_routes=supported_routes, supported_languages=supported_languages)
 
 
 @app.route('/wired-pick-of-day', methods=['GET'])
@@ -499,13 +559,6 @@ def scape_article16():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-@app.route('/zdnet-pick-of-day-text', methods=['GET'])
-def scape_article16_text():
-
-    result = zdnet_pick_of_day(False)
-
-    return jsonify(result)
 
 @app.route('/tech-news', methods=['GET'])
 def scape_article17():
