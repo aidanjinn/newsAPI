@@ -1,101 +1,334 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask API Frontend</title>
+    <title>News Explorer</title>
     <style>
+        :root[data-theme="light"] {
+            --primary-color: #2563eb;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-color: #1e293b;
+            --text-secondary: #475569;
+            --border-color: #e2e8f0;
+        }
+
+        :root[data-theme="dark"] {
+            --primary-color: #60a5fa;
+            --background-color: #0f172a;
+            --card-background: #1e293b;
+            --text-color: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
         }
+
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 2rem;
+            position: relative; 
         }
-        .dropdowns {
-            margin-bottom: 20px;
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
         }
+
+        .controls {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 1.5rem;
+            align-items: end;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        select {
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        select:hover {
+            border-color: var(--primary-color);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
         .result {
-            margin-top: 20px;
+            display: grid;
+            gap: 1.5rem;
         }
-        .result-item {
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+
+        .theme-toggle {
+            position: absolute;  
+            top: 1rem;
+            right: 1rem;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-color);
+            z-index: 10;
         }
-        .result-item a {
-            font-weight: bold;
-            color: #007BFF;
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            align-items: end;
+        }
+
+        @media (max-width: 768px) {
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;  
+        }
+
+        .article-content {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .article-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
             text-decoration: none;
+            margin: 0;
         }
-        .result-item a:hover {
-            text-decoration: underline;
+
+        .article-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1rem;
+            margin: 0;
+            padding-left: 2rem;
+            white-space: pre-line;
+        }
+
+        .article-text div {
+            position: relative;
+            padding-left: 1.5em;
+            margin-bottom: 0.75em;
+        }
+
+        .article-text div::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .article-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .result-item {
+            background: var(--card-background);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            transition: all 0.2s;
+            border: 1px solid var(--border-color);
+        }
+
+        .result-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        .result-item a {
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .result-item p {
+            color: #475569;
+            line-height: 1.6;
+            margin: 0;
         }
     </style>
 </head>
 <body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌞</span>
+        <span id="theme-text">Toggle Theme</span>
+    </button>
+
     <div class="container">
-        <h1>Flask API Frontend</h1>
-        <div class="dropdowns">
-            <label for="route">Select Route:</label>
-            <select id="route">
-                {% for route in supported_routes %}
-                    <option value="{{ route }}">{{ route }}</option>
-                {% endfor %}
-            </select>
+        <h1>News Explorer</h1>
+        <div class="controls">
+            <div class="controls-grid">
+                <div class="input-group">
+                    <label for="route">Select Route</label>
+                    <select id="route">
+                        {% for route in supported_routes %}
+                            <option value="{{ route }}">{{ route }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-            <label for="language">Select Language:</label>
-            <select id="language">
-                {% for language in supported_languages %}
-                    <option value="{{ language }}">{{ language }}</option>
-                {% endfor %}
-            </select>
+                <div class="input-group">
+                    <label for="language">Select Language</label>
+                    <select id="language">
+                        {% for language in supported_languages %}
+                            <option value="{{ language }}">{{ language }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-            <button onclick="queryAPI()">Query</button>
+                <button onclick="queryAPI()">Search News</button>
+            </div>
         </div>
 
         <div class="result" id="result"></div>
     </div>
 
     <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            const themeIcon = document.getElementById('theme-icon');
+            
+            html.setAttribute('data-theme', newTheme);
+            themeIcon.textContent = newTheme === 'light' ? '🌞' : '🌙';
+            
+            // Save theme preference
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.getElementById('theme-icon').textContent = savedTheme === 'light' ? '🌞' : '🌙';
+
+        function formatArticleText(text) {
+            // Remove numbered prefixes and clean up the text
+            return text
+                .replace(/\d+\.\s*/g, '') // Remove numbered prefixes
+                .split(/(?<=[.!?])\s+/)
+                .filter(sentence => sentence.trim().length > 0)
+                .map(sentence => `• ${sentence.trim()}`)
+                .join('\n\n');
+        }
+
         function queryAPI() {
-        const route = document.getElementById('route').value;
-        const language = document.getElementById('language').value;
-        const resultDiv = document.getElementById('result');
+            const route = document.getElementById('route').value;
+            const language = document.getElementById('language').value;
+            const resultDiv = document.getElementById('result');
 
-        // Clear previous results
-        resultDiv.innerHTML = '';
+            resultDiv.innerHTML = '';
 
-        // Make the API request
-        fetch(`${route}?language=${language}`)
-            .then(response => response.json())
-            .then(data => {
-                if (Array.isArray(data)) {
-                    data.forEach(item => {
+            fetch(`${route}?language=${language}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        data.forEach(item => {
+                            const itemDiv = document.createElement('div');
+                            itemDiv.className = 'result-item';
+                            itemDiv.innerHTML = `
+                                <div class="article-content">
+                                    <a href="${item.article_link}" target="_blank" class="article-title">${item.article_link}</a>
+                                    <div class="article-text">${formatArticleText(item.article_text)}</div>
+                                </div>
+                            `;
+                            resultDiv.appendChild(itemDiv);
+                        });
+                    } else {
                         const itemDiv = document.createElement('div');
                         itemDiv.className = 'result-item';
                         itemDiv.innerHTML = `
-                            <a href="${item.article_link}" target="_blank">${item.article_link}</a>
-                            <p>${item.article_text}</p>
+                            <div class="article-content">
+                                <a href="${data.article_link}" target="_blank" class="article-title">${data.article_link}</a>
+                                <div class="article-text">${formatArticleText(data.article_text)}</div>
+                            </div>
                         `;
                         resultDiv.appendChild(itemDiv);
-                    });
-                } else {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'result-item';
-                    itemDiv.innerHTML = `
-                        <a href="${data.article_link}" target="_blank">${data.article_link}</a>
-                        <p>${data.article_text}</p>
-                    `;
-                    resultDiv.appendChild(itemDiv);
-            }
-        })
-        .catch(error => {
-            resultDiv.innerHTML = `<div class="result-item">Error: ${error.message}</div>`;
-        });
-    }
+                    }
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = `<div class="result-item">Error: ${error.message}</div>`;
+                });
+        }
     </script>
 </body>
 </html>
