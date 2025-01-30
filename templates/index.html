@@ -108,19 +108,21 @@
         }
 
         .theme-toggle {
-            position: absolute;  
+            position: fixed;  
             top: 1rem;
             right: 1rem;
             background: var(--card-background);
             border: 1px solid var(--border-color);
-            padding: 0.5rem;
+            padding: 0.5rem 1rem;
             border-radius: 0.5rem;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 0.5rem;
             color: var(--text-color);
             z-index: 10;
+            width: auto;
+            min-width: fit-content;
         }
 
         .controls-grid {
@@ -336,13 +338,10 @@
         document.getElementById('theme-icon').textContent = savedTheme === 'light' ? '🌞' : '🌙';
 
         function formatArticleText(text) {
-            // Remove numbered prefixes and clean up the text
             return text
-                .replace(/\d+\.\s*/g, '') // Remove numbered prefixes
-                .split(/(?<=[.!?])\s+/)
-                .filter(sentence => sentence.trim().length > 0)
-                .map(sentence => `• ${sentence.trim()}`)
-                .join('\n\n');
+                .replace(/\d+\.\s*/g, '')  
+                .replace(/\*\s*/g, '• ')   
+                .trim();                    
         }
 
         function queryAPI() {
@@ -362,6 +361,7 @@
                             itemDiv.innerHTML = `
                                 <div class="article-content">
                                     <a href="${item.article_link}" target="_blank" class="article-title">${item.article_link}</a>
+                                    <h1 class="article-title">${item.article_title}</h1>
                                     <div class="article-text">${formatArticleText(item.article_text)}</div>
                                 </div>
                             `;
@@ -373,6 +373,7 @@
                         itemDiv.innerHTML = `
                             <div class="article-content">
                                 <a href="${data.article_link}" target="_blank" class="article-title">${data.article_link}</a>
+                                <h1 class="article-title">${data.article_title}</h1>
                                 <div class="article-text">${formatArticleText(data.article_text)}</div>
                             </div>
                         `;

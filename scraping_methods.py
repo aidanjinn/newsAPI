@@ -126,6 +126,10 @@ def vogue_pick_of_day(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                title_comp = article_soup.find('h1')
+                title = title_comp.get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -139,6 +143,7 @@ def vogue_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -187,6 +192,10 @@ def wired_pick_of_day(ai, language = "English"):
                     # Parse the article page
                     article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                    # Article title look for first <h1> tag
+                    title_comp = article_soup.find('h1')
+                    title = title_comp.get_text(strip=True)
+
                     # Extract article content (usually inside <p> tags)
                     paragraphs = article_soup.find_all('p')
 
@@ -200,6 +209,7 @@ def wired_pick_of_day(ai, language = "English"):
 
                     return {
                         "article_link": article_link,
+                        "article_title": title,
                         "article_text": summary
                     }
                 else:
@@ -246,6 +256,10 @@ def AP_pick_of_day(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                title_comp = article_soup.find('h1')
+                title = title_comp.get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -259,6 +273,7 @@ def AP_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -303,6 +318,10 @@ def rolling_stone_pick_of_day(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                title_comp = article_soup.find('h1')
+                title = title_comp.get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -316,6 +335,7 @@ def rolling_stone_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -336,15 +356,12 @@ def yahoo_sports_pick_of_day(url, ai, language = "English"):
         # Parse the HTML content of the page using BeautifulSoup
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        # these sports pages are done slightly differently
-        if url == "https://sports.yahoo.com/tennis/" or url == "https://sports.yahoo.com/golf/":
-            # Find the main content div with the identified class
-            main_content_div =  soup.find('div', attrs={'class' : '_ys_1unhdgw _ys_1x7t0np'})
-        else:
-            main_content_div = soup.find('div', attrs={
+        main_content_div = soup.find('div', attrs={
                 'class': '_ys_1unhdgw _ys_1kkgpmk'})
 
+
         if main_content_div:
+  
             # Now, find the first article or link within this div
             main_article_link = main_content_div.find('a', href=True)
 
@@ -362,6 +379,9 @@ def yahoo_sports_pick_of_day(url, ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                div_comp = article_soup.find('div', attrs={'class': 'caas-title-wrapper'})
+                title = div_comp.find('h1').get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -375,6 +395,7 @@ def yahoo_sports_pick_of_day(url, ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -419,6 +440,10 @@ def yahoo_sports_breaking_news(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                div_comp = article_soup.find('div', attrs={'class': 'caas-title-wrapper'})
+                title = div_comp.find('h1').get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -432,6 +457,7 @@ def yahoo_sports_breaking_news(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -476,6 +502,10 @@ def democracy_now_pick_of_day(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                title_comp = article_soup.find('h1')
+                title = title_comp.get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -489,6 +519,7 @@ def democracy_now_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -534,6 +565,10 @@ def SCMP_pick_of_day(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                title_comp = article_soup.find('h1')
+                title = title_comp.get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -547,6 +582,7 @@ def SCMP_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -592,6 +628,10 @@ def SCMP_china(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                title_comp = article_soup.find('h1')
+                title = title_comp.get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -605,6 +645,7 @@ def SCMP_china(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -649,6 +690,10 @@ def cosmo_style(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                title_comp = article_soup.find('h1')
+                title = title_comp.get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -662,6 +707,7 @@ def cosmo_style(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -673,24 +719,25 @@ def cosmo_style(ai, language = "English"):
         return {"error": f"An error occurred while fetching the data: {e}"}
 
 
+
 def techcrunch_pick_of_day(ai, language = "English"):
     url = "https://techcrunch.com/"
 
     try:
-        # Send a GET request to the AP homepage
+        # Send a GET request to the homepage
         response = requests.get(url)
-        response.raise_for_status()  # Raise an exception if the status code is not 200
+        response.raise_for_status()
 
         # Parse the HTML content of the page using BeautifulSoup
         soup = BeautifulSoup(response.content, 'html.parser')
 
         # Find the main content div with the identified class
         main_content_div = soup.find('div', attrs={
-            'class': 'hero-package hero-package-2 wp-block-techcrunch-hero-package'})
+            'class': 'hero-package-2__featured'})
+        main_content_div = main_content_div.find('h3', attrs={'class': 'loop-card__title'})
 
         if main_content_div:
-            # Now, find the first article or link within this div
-            main_content_div = main_content_div.find('h3', attrs={'class': 'loop-card__title'})
+            # Find the article link more directly
             main_article_link = main_content_div.find('a', href=True)
 
             if main_article_link:
@@ -698,19 +745,28 @@ def techcrunch_pick_of_day(ai, language = "English"):
 
                 # Handle relative URLs by adding the base URL
                 if article_link.startswith('/'):
-                    article_link = 'https://techcrunch.com/' + article_link
+                    article_link = 'https://techcrunch.com' + article_link
 
-                # Send a GET request to the article page to extract the article text
+                # Send a GET request to the article page
                 article_response = requests.get(article_link)
                 article_response.raise_for_status()
 
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
-                # Extract article content (usually inside <p> tags)
-                paragraphs = article_soup.find_all('p')
+                try:
+                    # Try multiple ways to find the title
+                    title_comp = (
+                        article_soup.find('h1', {'class': 'article__title'}) or
+                        article_soup.find('h1', {'class': 'article-hero__title'}) or
+                        article_soup.find('h1')
+                    )
+                    title = title_comp.get_text(strip=True) if title_comp else "Title not found"
+                except Exception:
+                    title = "Title not found"
 
-                # Join all paragraphs to get the full article text
+                # Extract article content
+                paragraphs = article_soup.find_all('p')
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
@@ -720,12 +776,13 @@ def techcrunch_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
                 return {"error": "No article link found in the main content div."}
         else:
-            return None
+            return {"error": "Main content div not found."}
 
     except requests.exceptions.RequestException as e:
         return {"error": f"An error occurred while fetching the data: {e}"}
@@ -764,6 +821,10 @@ def zdnet_pick_of_day(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                title_comp = article_soup.find('h1')
+                title = title_comp.get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -777,6 +838,7 @@ def zdnet_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -821,6 +883,10 @@ def weather_channel_pick_of_day(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                title_comp = article_soup.find('h1')
+                title = title_comp.get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -834,6 +900,7 @@ def weather_channel_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -892,6 +959,7 @@ def weather_gov_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": "Short Range Forecast Discussion",
                     "article_text": summary
                 }
             else:
@@ -936,6 +1004,10 @@ def yahoo_finance_pick_of_day(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                div_comp = article_soup.find('div', attrs={'class': 'cover-title yf-1rjrr1'})
+                title = div_comp.get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -949,6 +1021,7 @@ def yahoo_finance_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -993,6 +1066,10 @@ def economist_pick_of_day(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                title_comp = article_soup.find('h1')
+                title = title_comp.get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -1006,6 +1083,7 @@ def economist_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -1050,6 +1128,10 @@ def forbes_pick_of_day(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                title_comp = article_soup.find('h1')
+                title = title_comp.get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -1063,6 +1145,7 @@ def forbes_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -1109,6 +1192,10 @@ def people_pick_of_day(ai, language = "English"):
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
+                # Article title look for first <h1> tag
+                title_comp = article_soup.find('h1')
+                title = title_comp.get_text(strip=True)
+
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
 
@@ -1122,6 +1209,7 @@ def people_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_title": title,
                     "article_text": summary
                 }
             else:
@@ -1138,7 +1226,7 @@ def summarize_article_with_gemini(article_text, language):
     prompt = (
         f"Summarize the following article into its main 5 points be concise and create the summary/points based on only the data"
         f"provided to you. Do not make up any information only use what I give you. Do not start your response with a response to my prompt"
-        f"Only Give the Summary. (In the language:{language}, do not respond to this in response)::\n\n{article_text}")
+        f"Only Give the Summary for format please indicate the start of a new point using a bullet. (In the language:{language}, do not respond to this in response)::\n\n{article_text}")
     try:
         response = model.generate_content(prompt)
         summary = response.text.strip()

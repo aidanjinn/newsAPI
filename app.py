@@ -210,7 +210,7 @@ def scape_article5():
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
-        result = yahoo_sports_pick_of_day(True, language)
+        result = yahoo_sports_pick_of_day("https://sports.yahoo.com", True, language)
 
         if result:
             return jsonify(result)
@@ -336,10 +336,7 @@ def scrape_article8_text():
         "https://sports.yahoo.com/nhl/",
         "https://sports.yahoo.com/college-basketball/",
         "https://sports.yahoo.com/college-womens-basketball/",
-        "https://sports.yahoo.com/mlb/",
-        "https://sports.yahoo.com/soccer/",
-        "https://sports.yahoo.com/tennis/",
-        "https://sports.yahoo.com/golf/"
+        "https://sports.yahoo.com/mlb/"
     ]
 
     result = []
