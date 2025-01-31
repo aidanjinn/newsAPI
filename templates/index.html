@@ -253,6 +253,7 @@
             gap: 0.75rem;
         }
 
+        /* Update the result-item styles */
         .result-item {
             background: var(--card-background);
             padding: 1.5rem;
@@ -260,6 +261,41 @@
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
             transition: all 0.2s;
             border: 1px solid var(--border-color);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Add media queries for mobile responsiveness */
+        @media (max-width: 768px) {
+            .result-item {
+                padding: 1rem;
+                margin: 0.5rem 0;
+                width: 100%;
+            }
+
+            .article-content {
+                gap: 0.5rem;
+            }
+
+            .article-title {
+                font-size: 1.1rem;
+            }
+
+            .article-text {
+                font-size: 0.9rem;
+                padding-left: 1rem;
+            }
+
+            .result {
+                padding: 0 0.5rem;
+            }
+        }
+
+        /* Update container padding for mobile */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem 0.5rem;
+            }
         }
 
         .result-item:hover {
