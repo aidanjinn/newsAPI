@@ -3,7 +3,15 @@ import asyncio
 import aiohttp
 from concurrent.futures import ThreadPoolExecutor
 
-from scraping_methods import *
+from methods.entertainment_news import *
+from methods.fashion_news import *
+from methods.finance_news import *
+from methods.sports_news import *
+from methods.tech_news import *
+from methods.weather_news import *
+from methods.world_news import *
+
+
 from flask_cors import CORS
 
 '''
