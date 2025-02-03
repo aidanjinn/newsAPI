@@ -3,7 +3,7 @@ import threading
 import time
 
 cache = {}
-CACHE_LIMIT = 200 * 1024 * 1024  # 200 MB
+CACHE_LIMIT = 150 * 1024 * 1024  
 cache_lock = threading.Lock()
 
 def get_cache_size():

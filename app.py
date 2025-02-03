@@ -120,6 +120,7 @@ def scrape_article():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -163,6 +164,7 @@ def scape_article2():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -206,6 +208,7 @@ def scape_article3():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -248,6 +251,7 @@ def scape_article4():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -288,6 +292,7 @@ def scape_article5():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -356,6 +361,7 @@ def scape_article7():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -413,6 +419,7 @@ def scrape_article8():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -475,6 +482,7 @@ def scape_article9():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -513,6 +521,7 @@ def scape_article10():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -579,6 +588,7 @@ def scape_article11():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -619,6 +629,7 @@ def scape_article12():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -660,6 +671,7 @@ def scape_article13():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -698,6 +710,7 @@ def scape_article14():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -747,6 +760,7 @@ def scape_article15():
         with cache_lock and is_valid_article_data(result):
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -787,6 +801,7 @@ def scape_article16():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -820,6 +835,7 @@ def scape_article17():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -871,6 +887,7 @@ def scape_article18():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -911,6 +928,7 @@ def scape_article19():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -951,6 +969,7 @@ def scape_article20():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -1000,6 +1019,7 @@ def scape_article21():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -1039,6 +1059,7 @@ def scape_article22():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -1079,6 +1100,7 @@ def scape_article23():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -1118,6 +1140,7 @@ def scape_article24():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -1168,6 +1191,7 @@ def scape_article25():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -1208,6 +1232,7 @@ def scape_article26():
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
+                enforce_cache_limit()
                 return jsonify(cache[cache_key])
 
         if language not in supported_languages:
@@ -1275,6 +1300,7 @@ def memory_stats():
         'memory_percent': process.memory_percent(),
         'cache_entries': len(cache),
         'cache_keys': list(cache.keys()),
+        'cache_size_mb': get_cache_size() / 1024 / 1024,
         'cpu_percent': process.cpu_percent()
     }
     return jsonify(stats)
