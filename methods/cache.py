@@ -3,8 +3,25 @@ import threading
 import time
 
 cache = {}
-CACHE_LIMIT = 100 * 1024 * 1024  # 100MB
+CACHE_LIMIT = 200 * 1024 * 1024  # 200 MB
 cache_lock = threading.Lock()
+
+def get_cache_size():
+    """Calculate current cache size in bytes"""
+    import sys
+    size = 0
+    for key, value in cache.items():
+        size += sys.getsizeof(key)
+        size += sys.getsizeof(value)
+    return size
+
+def enforce_cache_limit():
+    """Remove oldest entries if cache exceeds size limit"""
+    while get_cache_size() > CACHE_LIMIT and cache:
+        # Remove oldest entry (first item in cache)
+        oldest_key = next(iter(cache))
+        del cache[oldest_key]
+        print(f"Removed {oldest_key} from cache due to size limit")
 
 def get_cache_key(route, language, date):
     return f"{route}_{language}_{date}"
