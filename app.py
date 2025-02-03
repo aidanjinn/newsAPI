@@ -11,6 +11,13 @@ from methods.tech_news import *
 from methods.weather_news import *
 from methods.world_news import *
 
+from datetime import datetime, timedelta
+import threading
+import time
+from methods.cache import *
+import psutil
+import os
+
 
 from flask_cors import CORS
 
@@ -33,6 +40,9 @@ supported_languages = [
     'somali', 'haitian creole', 'lao', 'khmer', 'burmese', 'sinhalese', 'malay',
     'macedonian', 'pidgin', 'catalon', 'flemish', 'dutch', 'afrikaans'
 ]
+
+cache_thread = threading.Thread(target=clear_old_cache, daemon=True)
+cache_thread.start()
 
 # new main page route for easier testing
 @app.route('/', methods=['GET'])
@@ -101,13 +111,28 @@ def scrape_article():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        # Daily Inital Cache
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('wired', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
-        # Default Behavior is AI-SUM ON; ENGLISH
-        result = wired_pick_of_day(True, language)
+        # Check cache first
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
-        if result:
+        # If not in cache, fetch new data
+        result = wired_pick_of_day(True, language)
+        
+        if result and is_valid_article_data(result):
+            # Store in cache
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -130,13 +155,27 @@ def scape_article2():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('ap', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = AP_pick_of_day(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
+
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -158,13 +197,27 @@ def scape_article3():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('vogue', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = vogue_pick_of_day(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
+
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -186,13 +239,25 @@ def scape_article4():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('rolling-stone', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = rolling_stone_pick_of_day(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -214,13 +279,25 @@ def scape_article5():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('yahoo-sports-pick', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+        
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = yahoo_sports_pick_of_day("https://sports.yahoo.com", True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -270,8 +347,17 @@ def scape_article7():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('yahoo-sports', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Fetch breaking news and pick of the day in the specified language
         breaking_news = yahoo_sports_breaking_news(True, language)
@@ -279,8 +365,13 @@ def scape_article7():
 
         # Combine results, include breaking news only if it's available
         result = [breaking_news, pick_of_day] if breaking_news else [pick_of_day]
-
-        return jsonify(result)
+        if result and is_valid_article_data(result):
+            with cache_lock:
+                    cache[cache_key] = result
+                    print(f"Cached result for {cache_key}")
+            return jsonify(result)
+        else:
+            return jsonify({"error": "No result found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -312,15 +403,30 @@ def scrape_article8():
 
     try:
         language = request.args.get('language', default='english').lower()
+
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('yahoo-sports-recap', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         results = loop.run_until_complete(fetch_yahoo_sports_recap(urls, language))
         loop.close()
 
-        if results:
+        if results and is_valid_article_data(results):
+            
+            with cache_lock:
+                cache[cache_key] = results
+                print(f"Cached result for {cache_key}")
+
             return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -360,13 +466,25 @@ def scape_article9():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('democracy-now', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+        
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = democracy_now_pick_of_day(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -385,8 +503,18 @@ def scape_article9_text():
 def scape_article10():
     try:
         language = request.args.get('language', default='english').lower()
+
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('world-news', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+        
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Creation of new event loop: manager handles and coordinates mult tasks
         loop = asyncio.new_event_loop()
@@ -397,7 +525,10 @@ def scape_article10():
         # then we clean up the loop
         loop.close()
 
-        if results:
+        if results and is_valid_article_data(results):
+            with cache_lock:
+                cache[cache_key] = results
+                print(f"Cached result for {cache_key}")
             return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -439,13 +570,25 @@ def scape_article11():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('SCMP-pick', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+            
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = SCMP_pick_of_day(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -467,13 +610,25 @@ def scape_article12():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('SCMP-china', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = SCMP_china(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -496,13 +651,25 @@ def scape_article13():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('cosmo', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+        
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = cosmo_style(True, language)
 
-        if result:
+        if result and is_valid_article_data(result): 
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -521,15 +688,28 @@ def scape_article13_text():
 def scape_article14():
     try:
         language = request.args.get('language', default='english').lower()
+
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('fashion', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         results = loop.run_until_complete(fetch_fashion_news(language))
         loop.close()
 
-        if results:
+        if results and is_valid_article_data(results):
+            with cache_lock:
+                cache[cache_key] = results
+                print(f"Cached result for {cache_key}")
             return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -558,13 +738,25 @@ def scape_article15():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('techcrunch', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock and is_valid_article_data(result):
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = techcrunch_pick_of_day(True, language)
 
         if result:
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -586,13 +778,25 @@ def scape_article16():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('zdnet', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+        
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = zdnet_pick_of_day(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -607,15 +811,27 @@ def scape_article17():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('tech-news', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         results = loop.run_until_complete(fetch_tech_news(language))
         loop.close()
 
-        if results:
+        if results and is_valid_article_data(results): 
+            with cache_lock:
+                cache[cache_key] = results
+                print(f"Cached result for {cache_key}")
             return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -646,13 +862,25 @@ def scape_article18():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('weather-channel', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = weather_channel_pick_of_day(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -674,13 +902,25 @@ def scape_article19():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('weather-gov', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = weather_gov_pick_of_day(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -702,15 +942,27 @@ def scape_article20():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('weather-news', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         results = loop.run_until_complete(fetch_weather_news(language))
         loop.close()
 
-        if results:
+        if results and is_valid_article_data(results):
+            with cache_lock:
+                cache[cache_key] = results
+                print(f"Cached result for {cache_key}")
             return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -739,13 +991,25 @@ def scape_article21():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('yahoo-finance', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = yahoo_finance_pick_of_day(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -766,13 +1030,25 @@ def scape_article22():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('economist-pick', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = economist_pick_of_day(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -794,13 +1070,25 @@ def scape_article23():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('forbes-pick', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+        
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = forbes_pick_of_day(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -821,15 +1109,27 @@ def scape_article24():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('finance-news', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+        
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         results = loop.run_until_complete(fetch_finance_news(language))
         loop.close()
 
-        if results:
+        if results and is_valid_article_data(results):
+            with cache_lock:
+                cache[cache_key] = results
+                print(f"Cached result for {cache_key}")
             return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -859,13 +1159,25 @@ def scape_article25():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('people-pick', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+        
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = people_pick_of_day(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
+            with cache_lock:
+                cache[cache_key] = result
+                print(f"Cached result for {cache_key}")
             return jsonify(result)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -887,15 +1199,27 @@ def scape_article26():
         # Get the language query parameter, default to 'english'
         language = request.args.get('language', default='english').lower()
 
+        default=('english').lower()
+        today = datetime.now().strftime("%Y%m%d")
+        cache_key = get_cache_key('entertainment', language, today)
+
         if language not in supported_languages:
             return jsonify({"error": f"Language '{language}' is not supported."}), 400
+        
+        with cache_lock:
+            if cache_key in cache:
+                print(f"Cache hit for {cache_key}")
+                return jsonify(cache[cache_key])
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         results = loop.run_until_complete(fetch_entertainment_news(language))
         loop.close()
 
-        if results:
+        if results and is_valid_article_data(results):
+            with cache_lock:
+                cache[cache_key] = results
+                print(f"Cached result for {cache_key}")
             return jsonify(results)
         else:
             return jsonify({"error": "No result found"}), 404
@@ -917,6 +1241,41 @@ async def fetch_entertainment_news(language):
 def scape_article26_text():
 
     return jsonify([rolling_stone_pick_of_day(False), people_pick_of_day(False)])
+
+@app.route('/clear-cache', methods=['POST'])
+def clear_specific_cache():
+    try:
+        data = request.get_json()
+        route = data.get('route')
+        language = data.get('language', 'english').lower()
+        
+        if not route:
+            return jsonify({"error": "Route parameter is required"}), 400
+            
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported"}), 400
+            
+        success = clear_cache_key(route, language)
+        if success:
+            return jsonify({"message": f"Cache cleared for {route} in {language}"})
+        else:
+            return jsonify({"message": f"No cache entry found for {route} in {language}"}), 404
+            
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/memory-stats', methods=['GET'])
+def memory_stats():
+    process = psutil.Process(os.getpid())
+    stats = {
+        'memory_usage_mb': process.memory_info().rss / 1024 / 1024,  # Convert to MB
+        'memory_percent': process.memory_percent(),
+        'cache_entries': len(cache),
+        'cache_keys': list(cache.keys()),
+        'cpu_percent': process.cpu_percent()
+    }
+    return jsonify(stats)
 
 if __name__ == '__main__':
     app.run(debug=True)

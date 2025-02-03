@@ -374,10 +374,21 @@
         document.getElementById('theme-icon').textContent = savedTheme === 'light' ? '🌞' : '🌙';
 
         function formatArticleText(text) {
-            return text
-                .replace(/\d+\.\s*/g, '')  
-                .replace(/\*\s*/g, '• ')   
-                .trim();                    
+            if (!text) return '';
+            
+            // First decode any HTML entities
+            const decoded = text.replace(/&lt;/g, '<')
+                               .replace(/&gt;/g, '>')
+                               .replace(/&amp;/g, '&');
+            
+            // Then strip any HTML tags
+            const stripped = decoded.replace(/<[^>]*>/g, '');
+            
+            // Finally format the text
+            return stripped
+                .replace(/\d+\.\s*/g, '')
+                .replace(/\*\s*/g, '• ')
+                .trim();
         }
 
         function queryAPI() {
