@@ -8,3 +8,4 @@ Flask-Cors~=5.0.0
 python-dotenv~=1.0.1
 aiohttp==3.9.1
 asyncio==3.4.3
+psutil==5.9.5
