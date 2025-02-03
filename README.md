@@ -8,6 +8,26 @@ The **News Summarization API** is a powerful tool built using **Python**, **Flas
 
 ---
 
+# Project Structure
+```tree
+newsAPI/
+├── app.py
+├── methods/
+│   ├── entertainment_news.py
+│   ├── fashion_news.py
+│   ├── finance_news.py
+│   ├── gemini.py
+│   ├── sports_news.py
+│   ├── tech_news.py
+│   ├── weather_news.py
+│   └── world_news.py
+├── templates/
+│   └── index.html
+└── tests/
+    └── test_routes.py
+```
+---
+
 ## Features
 
 - **Multi-Publication Support**: Fetch news from a variety of sources like Wired, AP, Vogue, Yahoo Sports, and more.
