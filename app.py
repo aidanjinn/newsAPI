@@ -116,14 +116,14 @@ def scrape_article():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('wired', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
-
         # Check cache first
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # If not in cache, fetch new data
         result = wired_pick_of_day(True, language)
@@ -159,13 +159,14 @@ def scape_article2():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('ap', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = AP_pick_of_day(True, language)
@@ -201,13 +202,14 @@ def scape_article3():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('vogue', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = vogue_pick_of_day(True, language)
@@ -243,13 +245,13 @@ def scape_article4():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('rolling-stone', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
-
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = rolling_stone_pick_of_day(True, language)
@@ -282,14 +284,14 @@ def scape_article5():
         default=('english').lower()
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('yahoo-sports-pick', language, today)
-
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
         
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = yahoo_sports_pick_of_day("https://sports.yahoo.com", True, language)
@@ -351,13 +353,13 @@ def scape_article7():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('yahoo-sports', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
-
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Fetch breaking news and pick of the day in the specified language
         breaking_news = yahoo_sports_breaking_news(True, language)
@@ -408,13 +410,13 @@ def scrape_article8():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('yahoo-sports-recap', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
-
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
@@ -469,14 +471,14 @@ def scape_article9():
         default=('english').lower()
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('democracy-now', language, today)
-
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
         
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = democracy_now_pick_of_day(True, language)
@@ -507,14 +509,14 @@ def scape_article10():
         default=('english').lower()
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('world-news', language, today)
-
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
         
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Creation of new event loop: manager handles and coordinates mult tasks
         loop = asyncio.new_event_loop()
@@ -573,14 +575,14 @@ def scape_article11():
         default=('english').lower()
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('SCMP-pick', language, today)
-
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
             
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = SCMP_pick_of_day(True, language)
@@ -614,13 +616,13 @@ def scape_article12():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('SCMP-china', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
-
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = SCMP_china(True, language)
@@ -654,14 +656,14 @@ def scape_article13():
         default=('english').lower()
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('cosmo', language, today)
-
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
         
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = cosmo_style(True, language)
@@ -693,13 +695,13 @@ def scape_article14():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('fashion', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
-
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
@@ -742,13 +744,13 @@ def scape_article15():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('techcrunch', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
-
         with cache_lock and is_valid_article_data(result):
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = techcrunch_pick_of_day(True, language)
@@ -781,14 +783,14 @@ def scape_article16():
         default=('english').lower()
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('zdnet', language, today)
-
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
         
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = zdnet_pick_of_day(True, language)
@@ -815,13 +817,13 @@ def scape_article17():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('tech-news', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
-
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
@@ -866,13 +868,13 @@ def scape_article18():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('weather-channel', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
-
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = weather_channel_pick_of_day(True, language)
@@ -906,13 +908,13 @@ def scape_article19():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('weather-gov', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
-
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = weather_gov_pick_of_day(True, language)
@@ -946,13 +948,13 @@ def scape_article20():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('weather-news', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
-
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
@@ -995,13 +997,13 @@ def scape_article21():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('yahoo-finance', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
-
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = yahoo_finance_pick_of_day(True, language)
@@ -1034,13 +1036,13 @@ def scape_article22():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('economist-pick', language, today)
 
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
-
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = economist_pick_of_day(True, language)
@@ -1073,14 +1075,14 @@ def scape_article23():
         default=('english').lower()
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('forbes-pick', language, today)
-
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
         
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = forbes_pick_of_day(True, language)
@@ -1112,14 +1114,14 @@ def scape_article24():
         default=('english').lower()
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('finance-news', language, today)
-
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
         
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
@@ -1162,14 +1164,14 @@ def scape_article25():
         default=('english').lower()
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('people-pick', language, today)
-
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
         
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         # Default Behavior is AI-SUM ON; ENGLISH
         result = people_pick_of_day(True, language)
@@ -1202,14 +1204,14 @@ def scape_article26():
         default=('english').lower()
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('entertainment', language, today)
-
-        if language not in supported_languages:
-            return jsonify({"error": f"Language '{language}' is not supported."}), 400
         
         with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 return jsonify(cache[cache_key])
+
+        if language not in supported_languages:
+            return jsonify({"error": f"Language '{language}' is not supported."}), 400
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
