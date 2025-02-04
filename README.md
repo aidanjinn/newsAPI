@@ -13,6 +13,7 @@ The **News Summarization API** is a powerful tool built using **Python**, **Flas
 newsAPI/
 ├── app.py
 ├── methods/
+|   ├── cache.py
 │   ├── entertainment_news.py
 │   ├── fashion_news.py
 │   ├── finance_news.py
@@ -25,6 +26,8 @@ newsAPI/
 │   └── index.html
 └── tests/
     └── test_routes.py
+    └── test_cache.py
+    └── test_time_cache.py
 ```
 ---
 
