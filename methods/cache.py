@@ -39,6 +39,9 @@ def get_next_cache_clear_time(current_time=None):
     hours = current_time.hour
     next_slot = ((hours // 4) + 1) * 4
     
+    # Add debug logging
+    print(f"Current hour: {hours}, Next slot: {next_slot}")
+    
     next_time = current_time.replace(
         hour=(next_slot % 24),
         minute=0,
@@ -46,10 +49,11 @@ def get_next_cache_clear_time(current_time=None):
         microsecond=0
     )
     
-    # If next_slot exceeds 24, move to next day
-    if next_slot >= 24:
+    # If next_slot exceeds 24 or if next_time is in the past, move to next day
+    if next_slot >= 24 or next_time <= current_time:
         next_time += timedelta(days=1)
     
+    print(f"Current time: {current_time}, Next cache clear time: {next_time}")
     return next_time
 
 def clear_old_cache():
@@ -58,22 +62,23 @@ def clear_old_cache():
     
     while True:
         with next_cache_clear_lock:
-            if next_cache_clear is None:
-                next_cache_clear = get_next_cache_clear_time()
-            
             current_time = datetime.now()
+            
+            # Initialize next_cache_clear if None
+            if next_cache_clear is None:
+                next_cache_clear = get_next_cache_clear_time(current_time)
+                print(f"Initialized next cache clear time to: {next_cache_clear}")
+            
+            # Check if it's time to clear and the time is valid
             if current_time >= next_cache_clear:
                 with cache_lock:
                     cache.clear()
                     print(f"Cache cleared at {current_time}")
                 next_cache_clear = get_next_cache_clear_time(current_time)
+                print(f"Next cache clear scheduled for: {next_cache_clear}")
         
         # Sleep for 5 minutes before checking again
         time.sleep(300)
-
-# Start the cache clearing thread
-cache_clear_thread = threading.Thread(target=clear_old_cache, daemon=True)
-cache_clear_thread.start()
 
 def clear_cache_key(route, language):
     """Clear a specific cache entry."""
