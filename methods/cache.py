@@ -26,24 +26,29 @@ def enforce_cache_limit():
 def get_cache_key(route, language, date):
     return f"{route}_{language}_{date}"
 
+# Add this at the top with other globals
+next_cache_clear = None
+def get_next_cache_clear_time(current_time=None):
+    """Calculate the next cache clear time based on current time."""
+    now = current_time or datetime.now()
+    
+    # Cache set to clear every 4 hours
+    next_clear = (now + timedelta(hours=4)).replace(second=0, microsecond=0)
+    
+    return next_clear
+
+# Modify clear_old_cache to use the new function
 def clear_old_cache():
-    """Clear cache four times a day: 6 AM, 12 PM, 8 PM, and midnight."""
+    """Clear cache every 4 hours"""
+    global next_cache_clear
     while True:
         now = datetime.now()
         with cache_lock:
             cache.clear()
             print(f"Cache cleared at {now}")
         
-        # Calculate next clearing time
-        if now.hour < 6:
-            next_clear = now.replace(hour=6, minute=0, second=0, microsecond=0)
-        elif now.hour < 12:
-            next_clear = now.replace(hour=12, minute=0, second=0, microsecond=0)
-        elif now.hour < 20:
-            next_clear = now.replace(hour=20, minute=0, second=0, microsecond=0)
-        else:
-            next_clear = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
-        
+        next_clear = get_next_cache_clear_time(now)
+        next_cache_clear = next_clear
         sleep_seconds = (next_clear - now).total_seconds()
         time.sleep(sleep_seconds)
 

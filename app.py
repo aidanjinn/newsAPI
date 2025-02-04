@@ -1295,13 +1295,22 @@ def clear_specific_cache():
 @app.route('/memory-stats', methods=['GET'])
 def memory_stats():
     process = psutil.Process(os.getpid())
+    now = datetime.now()
+    next_clear = get_next_cache_clear_time(now)
+    
+    time_remaining = (next_clear - now).total_seconds()
+    hours, remainder = divmod(int(time_remaining), 3600)
+    minutes, seconds = divmod(remainder, 60)
+    
     stats = {
-        'memory_usage_mb': process.memory_info().rss / 1024 / 1024,  # Convert to MB
+        'memory_usage_mb': process.memory_info().rss / 1024 / 1024,
         'memory_percent': process.memory_percent(),
         'cache_entries': len(cache),
         'cache_keys': list(cache.keys()),
         'cache_size_mb': get_cache_size() / 1024 / 1024,
-        'cpu_percent': process.cpu_percent()
+        'cpu_percent': process.cpu_percent(),
+        'next_cache_clear': next_clear.strftime("%Y-%m-%d %H:%M:%S"),
+        'time_until_clear': f"{hours:02d}:{minutes:02d}:{seconds:02d}"
     }
     return jsonify(stats)
 
