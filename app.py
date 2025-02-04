@@ -757,7 +757,7 @@ def scape_article15():
         today = datetime.now().strftime("%Y%m%d")
         cache_key = get_cache_key('techcrunch', language, today)
 
-        with cache_lock and is_valid_article_data(result):
+        with cache_lock:
             if cache_key in cache:
                 print(f"Cache hit for {cache_key}")
                 enforce_cache_limit()
@@ -769,7 +769,7 @@ def scape_article15():
         # Default Behavior is AI-SUM ON; ENGLISH
         result = techcrunch_pick_of_day(True, language)
 
-        if result:
+        if result and is_valid_article_data(result):
             with cache_lock:
                 cache[cache_key] = result
                 print(f"Cached result for {cache_key}")
