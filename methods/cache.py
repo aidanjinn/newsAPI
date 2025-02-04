@@ -26,31 +26,45 @@ def enforce_cache_limit():
 def get_cache_key(route, language, date):
     return f"{route}_{language}_{date}"
 
-# Add this at the top with other globals
+
 next_cache_clear = None
+next_cache_clear_lock = threading.Lock()
+
 def get_next_cache_clear_time(current_time=None):
     """Calculate the next cache clear time based on current time."""
     now = current_time or datetime.now()
+    hours = now.hour
+    next_interval = ((hours // 4) + 1) * 4
+    next_clear = now.replace(hour=next_interval % 24, minute=0, second=0, microsecond=0)
     
-    # Cache set to clear every 4 hours
-    next_clear = (now + timedelta(hours=4)).replace(second=0, microsecond=0)
+    if next_clear <= now:
+        next_clear += timedelta(hours=4)
     
     return next_clear
 
-# Modify clear_old_cache to use the new function
+
 def clear_old_cache():
-    """Clear cache every 4 hours"""
+    """Clear cache every 4 hours in a thread-safe manner."""
     global next_cache_clear
+    
+    with next_cache_clear_lock:
+        next_cache_clear = get_next_cache_clear_time()
+    
     while True:
         now = datetime.now()
-        with cache_lock:
-            cache.clear()
-            print(f"Cache cleared at {now}")
+        current_clear_time = None
         
-        next_clear = get_next_cache_clear_time(now)
-        next_cache_clear = next_clear
-        sleep_seconds = (next_clear - now).total_seconds()
-        time.sleep(sleep_seconds)
+        with next_cache_clear_lock:
+            current_clear_time = next_cache_clear
+            
+            if now >= current_clear_time:
+                with cache_lock:
+                    cache.clear()
+                    print(f"Cache cleared at {now}")
+                next_cache_clear = get_next_cache_clear_time(now)
+        
+        # Sleep for a shorter interval to be more responsive
+        time.sleep(10)
 
 def clear_cache_key(route, language):
     """Clear a specific cache entry."""

@@ -1296,23 +1296,28 @@ def clear_specific_cache():
 def memory_stats():
     process = psutil.Process(os.getpid())
     now = datetime.now()
-    next_clear = get_next_cache_clear_time(now)
     
-    time_remaining = (next_clear - now).total_seconds()
+    current_clear_time = None
+    with next_cache_clear_lock:
+        current_clear_time = next_cache_clear or get_next_cache_clear_time()
+    
+    time_remaining = max(0, (current_clear_time - now).total_seconds())
     hours, remainder = divmod(int(time_remaining), 3600)
     minutes, seconds = divmod(remainder, 60)
-    
+
     stats = {
-        'memory_usage_mb': process.memory_info().rss / 1024 / 1024,
-        'memory_percent': process.memory_percent(),
+        'memory_usage_mb': round(process.memory_info().rss / 1024 / 1024, 2),
+        'memory_percent': round(process.memory_percent(), 2),
         'cache_entries': len(cache),
         'cache_keys': list(cache.keys()),
-        'cache_size_mb': get_cache_size() / 1024 / 1024,
-        'cpu_percent': process.cpu_percent(),
-        'next_cache_clear': next_clear.strftime("%Y-%m-%d %H:%M:%S"),
-        'time_until_clear': f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+        'cache_size_mb': round(get_cache_size() / 1024 / 1024, 2),
+        'cpu_percent': round(process.cpu_percent(), 2),
+        'next_cache_clear': current_clear_time.strftime("%Y-%m-%d %H:%M:%S"),
+        'time_until_clear': f"{hours:02d}:{minutes:02d}:{seconds:02d}",
+        'current_time': now.strftime("%Y-%m-%d %H:%M:%S")
     }
     return jsonify(stats)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
