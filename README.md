@@ -12,6 +12,7 @@ The **News Summarization API** is a powerful tool built using **Python**, **Flas
 ```tree
 newsAPI/
 ├── app.py
+├── config.py
 ├── methods/
 |   ├── cache.py
 │   ├── entertainment_news.py
@@ -22,11 +23,20 @@ newsAPI/
 │   ├── tech_news.py
 │   ├── weather_news.py
 │   └── world_news.py
+├── routes/
+│   ├── entertainment_news_route.py
+│   ├── fashion_news_route.py
+│   ├── finance_news_route.py
+│   ├── sports_news_route.py
+│   ├── tech_news_route.py
+│   ├── weather_news_route.py
+│   └── world_news_route.py
 ├── templates/
 │   └── index.html
 └── tests/
-    └── test_routes.py
-    └── test_cache.py
+    ├── test_routes.py
+    ├── test_cache.py
+    ├── test_scraping.py
     └── test_time_cache.py
 ```
 ---
@@ -37,6 +47,7 @@ newsAPI/
 - **AI-Powered Summaries**: Get concise summaries of articles using Google Gemini.
 - **Language Translation**: Translate articles or summaries into your preferred language.
 - **Raw Article Text**: Option to retrieve the full article text without AI summarization.
+- **Article Caching**: Cache summaries to improve performance.
 
 ---
 
