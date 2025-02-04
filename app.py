@@ -41,8 +41,9 @@ supported_languages = [
     'macedonian', 'pidgin', 'catalon', 'flemish', 'dutch', 'afrikaans'
 ]
 
-cache_thread = threading.Thread(target=clear_old_cache, daemon=True)
-cache_thread.start()
+# Start the cache clearing thread
+cache_clear_thread = threading.Thread(target=clear_old_cache, daemon=True)
+cache_clear_thread.start()
 
 # new main page route for easier testing
 @app.route('/', methods=['GET'])

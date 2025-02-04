@@ -32,39 +32,48 @@ next_cache_clear_lock = threading.Lock()
 
 def get_next_cache_clear_time(current_time=None):
     """Calculate the next cache clear time based on current time."""
-    now = current_time or datetime.now()
-    hours = now.hour
-    next_interval = ((hours // 4) + 1) * 4
-    next_clear = now.replace(hour=next_interval % 24, minute=0, second=0, microsecond=0)
+    if current_time is None:
+        current_time = datetime.now()
     
-    if next_clear <= now:
-        next_clear += timedelta(hours=4)
+    # Round to the next 4-hour mark
+    hours = current_time.hour
+    next_slot = ((hours // 4) + 1) * 4
     
-    return next_clear
-
+    next_time = current_time.replace(
+        hour=(next_slot % 24),
+        minute=0,
+        second=0,
+        microsecond=0
+    )
+    
+    # If next_slot exceeds 24, move to next day
+    if next_slot >= 24:
+        next_time += timedelta(days=1)
+    
+    return next_time
 
 def clear_old_cache():
     """Clear cache every 4 hours in a thread-safe manner."""
     global next_cache_clear
     
-    with next_cache_clear_lock:
-        next_cache_clear = get_next_cache_clear_time()
-    
     while True:
-        now = datetime.now()
-        current_clear_time = None
-        
         with next_cache_clear_lock:
-            current_clear_time = next_cache_clear
+            if next_cache_clear is None:
+                next_cache_clear = get_next_cache_clear_time()
             
-            if now >= current_clear_time:
+            current_time = datetime.now()
+            if current_time >= next_cache_clear:
                 with cache_lock:
                     cache.clear()
-                    print(f"Cache cleared at {now}")
-                next_cache_clear = get_next_cache_clear_time(now)
+                    print(f"Cache cleared at {current_time}")
+                next_cache_clear = get_next_cache_clear_time(current_time)
         
-        # Sleep for a shorter interval to be more responsive
-        time.sleep(10)
+        # Sleep for 5 minutes before checking again
+        time.sleep(300)
+
+# Start the cache clearing thread
+cache_clear_thread = threading.Thread(target=clear_old_cache, daemon=True)
+cache_clear_thread.start()
 
 def clear_cache_key(route, language):
     """Clear a specific cache entry."""
