@@ -158,7 +158,7 @@ def world_news_register_routes(app):
     @app.route('/world-news-text', methods=['GET'])
     def scape_article10_text():
 
-        return jsonify([AP_pick_of_day(False), democracy_now_pick_of_day(False), SCMP_pick_of_day(False)])
+        return jsonify([AP_pick_of_day(False), democracy_now_pick_of_day(False), SCMP_pick_of_day(False), SCMP_china(False)])
 
     @app.route('/SCMP-pick-of-day', methods=['GET'])
     def scape_article11():
