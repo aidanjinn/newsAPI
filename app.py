@@ -11,6 +11,8 @@ from routes.finance_news_route import finance_news_register_routes
 from routes.fashion_news_route import fashion_news_register_routes
 from routes.entertainment_news_route import entertainment_news_register_routes
 
+from config import supported_languages
+
 from datetime import datetime, timedelta
 import threading
 import time
@@ -31,16 +33,6 @@ app = Flask(__name__)
 
 CORS(app)
 
-supported_languages = [
-    'english', 'spanish', 'french', 'chinese', 'japanese', 'hindi', 'arabic', 'portuguese',
-    'russian', 'german', 'italian', 'korean', 'bulgarian', 'croatian', 'czech', 'danish',
-    'dutch', 'swedish', 'norwegian', 'finnish', 'polish', 'bengali', 'greek', 'thai',
-    'vietnamese', 'indonesian', 'hebrew', 'turkish', 'ukrainian', 'romanian', 'slovak',
-    'slovenian', 'serbian', 'bosnian', 'hungarian', 'tagalog', 'urdu', 'swahili', 'amharic',
-    'somali', 'haitian creole', 'lao', 'khmer', 'burmese', 'sinhalese', 'malay',
-    'macedonian', 'pidgin', 'catalon', 'flemish', 'dutch', 'afrikaans'
-]
-
 world_news_register_routes(app)
 weather_news_register_routes(app)
 tech_news_register_routes(app)
@@ -48,7 +40,6 @@ sports_news_register_routes(app)
 finance_news_register_routes(app)
 fashion_news_register_routes(app)
 entertainment_news_register_routes(app)
-
 
 
 cache_thread = threading.Thread(target=clear_old_cache, daemon=True)
