@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from methods.gemini import summarize_article_with_gemini
 from methods.scraping_template import scrape_template
 
-def wired_pick_of_day(ai, language):
+def wired_pick_of_day(ai, language = "English"):
     url = "https://www.wired.com/"
 
     try:
