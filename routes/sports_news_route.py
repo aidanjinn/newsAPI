@@ -4,6 +4,7 @@ from methods.cache import *
 from datetime import datetime
 import asyncio 
 from config import supported_languages
+from routes.helper_functions import *
 
 async def fetch_yahoo_sports_recap(urls, language):
     async def fetch_article(url):
@@ -15,7 +16,7 @@ async def fetch_yahoo_sports_recap(urls, language):
 def sports_news_register_routes(app):
     
     @app.route('/yahoo-sports-pick-of-day', methods=['GET'])
-    def scape_article5():
+    def scape_article_yahoo_sports_pick():
 
         try:
             # Get the language query parameter, default to 'english'
@@ -49,14 +50,14 @@ def sports_news_register_routes(app):
             return jsonify({"error": str(e)}), 500
 
     @app.route('/yahoo-sports-pick-of-day-text', methods=['GET'])
-    def scape_article5_text():
+    def scape_article_yahoo_sports_pick_text():
 
         result = yahoo_sports_pick_of_day("https://sports.yahoo.com/", False)
 
         return jsonify(result)
 
     @app.route('/yahoo-sports-breaking-news', methods=['GET'])
-    def scape_article6():
+    def scape_article_yahoo_sport_breaking_news():
 
         try:
             # Get the language query parameter, default to 'english'
@@ -77,14 +78,14 @@ def sports_news_register_routes(app):
             return jsonify({"error": str(e)}), 500
 
     @app.route('/yahoo-sports-breaking-news-text', methods=['GET'])
-    def scape_article6_text():
+    def scape_article_yahoo_sports_breaking_news_text():
 
         result = yahoo_sports_breaking_news(False)
 
         return jsonify(result)
 
     @app.route('/yahoo-sports', methods=['GET'])
-    def scape_article7():
+    def scape_article_yahoo_sports():
 
         try:
             # Get the language query parameter, default to 'english'
@@ -120,7 +121,7 @@ def sports_news_register_routes(app):
             return jsonify({"error": str(e)}), 500
 
     @app.route('/yahoo-sports-text', methods=['GET'])
-    def scape_article7_text():
+    def scape_article_yahoo_sports_text():
 
         breaking_news = yahoo_sports_breaking_news(False)
         pick_of_day = yahoo_sports_pick_of_day("https://sports.yahoo.com/",False)
@@ -134,7 +135,7 @@ def sports_news_register_routes(app):
 
 
     @app.route('/yahoo-sports-recap', methods = ['GET'])
-    def scrape_article8():
+    def scrape_article_yahoo_sport_recap():
         urls = [
             "https://sports.yahoo.com/nfl/",
             "https://sports.yahoo.com/college-football/",
@@ -179,7 +180,7 @@ def sports_news_register_routes(app):
             return jsonify({"error": str(e)}), 500
 
     @app.route('/yahoo-sports-recap-text', methods = ['GET'])
-    def scrape_article8_text():
+    def scrape_article_yahoo_sports_recap_text():
 
         urls = [
             "https://sports.yahoo.com/nfl/",

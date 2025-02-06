@@ -59,5 +59,9 @@ supported_routes = [
 
     '/people-pick-of-day',
 
-    '/entertainment-news'
+    '/entertainment-news',
+    
+    '/BBC-pick-of-day',
+    
+    '/NPR-pick-of-day'
 ]
