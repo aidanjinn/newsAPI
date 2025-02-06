@@ -50,24 +50,30 @@ def clear_old_cache():
     global next_cache_clear
     
     while True:
-        with next_cache_clear_lock:
-            current_time = datetime.utcnow()
+        try:
+            with next_cache_clear_lock:
+                current_time = datetime.utcnow()
+                
+                # Initialize next_cache_clear if None
+                if next_cache_clear is None:
+                    next_cache_clear = get_next_cache_clear_time(current_time)
+                    print(f"Initialized next cache clear time to: {next_cache_clear}")
+                
+                # Check if it's time to clear and the time is valid
+                if current_time >= next_cache_clear:
+                    with cache_lock:
+                        cache.clear()
+                        print(f"Cache cleared at {current_time}")
+                    next_cache_clear = get_next_cache_clear_time(current_time)
+                    print(f"Next cache clear scheduled for: {next_cache_clear}")
             
-            # Initialize next_cache_clear if None
-            if next_cache_clear is None:
-                next_cache_clear = get_next_cache_clear_time(current_time)
-                print(f"Initialized next cache clear time to: {next_cache_clear}")
-            
-            # Check if it's time to clear and the time is valid
-            if current_time >= next_cache_clear:
-                with cache_lock:
-                    cache.clear()
-                    print(f"Cache cleared at {current_time}")
-                next_cache_clear = get_next_cache_clear_time(current_time)
-                print(f"Next cache clear scheduled for: {next_cache_clear}")
-        
-        # Sleep for 5 minutes before checking again
-        time.sleep(300)
+            # Sleep for 5 minutes before checking again
+            time.sleep(300)
+        except Exception as e:
+            print(f"Error in cache clearing thread: {str(e)}")
+            # Sleep briefly before retrying to avoid tight error loops
+            time.sleep(10)
+            continue
 
 def clear_cache_key(route, language):
     """Clear a specific cache entry."""

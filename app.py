@@ -46,13 +46,32 @@ cache_thread = None
 
 def start_cache_thread():
     global cache_thread
-    if cache_thread is None or not cache_thread.is_alive():
-        cache_thread = threading.Thread(target=clear_old_cache, daemon=True)
-        cache_thread.start()
-        print("Cache clearing thread started")
+    try:
+        if cache_thread is None or not cache_thread.is_alive():
+            cache_thread = threading.Thread(target=clear_old_cache, daemon=True)
+            cache_thread.start()
+            print("Cache clearing thread started successfully")
+        else:
+            print("Cache clearing thread is already running")
+    except Exception as e:
+        print(f"Error starting cache thread: {str(e)}")
+        # Attempt to restart the thread
+        try:
+            cache_thread = threading.Thread(target=clear_old_cache, daemon=True)
+            cache_thread.start()
+            print("Cache clearing thread restarted after error")
+        except Exception as e:
+            print(f"Failed to restart cache thread: {str(e)}")
 
-
+# Initialize cache clearing thread
 start_cache_thread()
+
+@app.before_request
+def ensure_cache_thread():
+    global cache_thread
+    if cache_thread is None or not cache_thread.is_alive():
+        start_cache_thread()
+
 
 '''
     Main Page Route: Sets up drop downs to ping supported routes
