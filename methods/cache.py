@@ -33,36 +33,25 @@ next_cache_clear_lock = threading.Lock()
 def get_next_cache_clear_time(current_time=None):
     """Calculate the next cache clear time based on current time."""
     if current_time is None:
-        current_time = datetime.now()
+        current_time = datetime.utcnow()  
     
-    # Round to the next 4-hour mark
-    hours = current_time.hour
-    next_slot = ((hours // 4) + 1) * 4
-    
-    # Add debug logging
-    print(f"Current hour: {hours}, Next slot: {next_slot}")
-    
+    # Round to the next hour mark
     next_time = current_time.replace(
-        hour=(next_slot % 24),
         minute=0,
         second=0,
         microsecond=0
-    )
+    ) + timedelta(hours=1)
     
-    # If next_slot exceeds 24 or if next_time is in the past, move to next day
-    if next_slot >= 24 or next_time <= current_time:
-        next_time += timedelta(days=1)
-    
-    print(f"Current time: {current_time}, Next cache clear time: {next_time}")
+    print(f"Current UTC time: {current_time}, Next cache clear time: {next_time}")
     return next_time
 
 def clear_old_cache():
-    """Clear cache every 4 hours in a thread-safe manner."""
+    """Clear cache every hour in a thread-safe manner."""
     global next_cache_clear
     
     while True:
         with next_cache_clear_lock:
-            current_time = datetime.now()
+            current_time = datetime.utcnow()
             
             # Initialize next_cache_clear if None
             if next_cache_clear is None:
@@ -82,7 +71,7 @@ def clear_old_cache():
 
 def clear_cache_key(route, language):
     """Clear a specific cache entry."""
-    today = datetime.now().strftime("%Y%m%d")
+    today = datetime.utcnow().strftime("%Y%m%d")
     cache_key = get_cache_key(route, language, today)
     with cache_lock:
         if cache_key in cache:

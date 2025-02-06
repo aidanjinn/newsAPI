@@ -26,6 +26,7 @@ from flask_cors import CORS
 '''
 [JSON Object Fields]
 @ Website Link:
+@ Title:
 @ Summary:
 '''
 
@@ -41,9 +42,17 @@ finance_news_register_routes(app)
 fashion_news_register_routes(app)
 entertainment_news_register_routes(app)
 
+cache_thread = None
 
-cache_thread = threading.Thread(target=clear_old_cache, daemon=True)
-cache_thread.start()
+def start_cache_thread():
+    global cache_thread
+    if cache_thread is None or not cache_thread.is_alive():
+        cache_thread = threading.Thread(target=clear_old_cache, daemon=True)
+        cache_thread.start()
+        print("Cache clearing thread started")
+
+
+start_cache_thread()
 
 '''
     Main Page Route: Sets up drop downs to ping supported routes
@@ -79,7 +88,7 @@ def clear_specific_cache():
 @app.route('/memory-stats', methods=['GET'])
 def memory_stats():
     process = psutil.Process(os.getpid())
-    now = datetime.now()
+    now = datetime.utcnow()
     
     current_clear_time = None
     with next_cache_clear_lock:

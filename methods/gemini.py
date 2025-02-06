@@ -5,7 +5,7 @@ import google.generativeai as genai
 load_dotenv()
 api = os.getenv('API_KEY')
 genai.configure(api_key=api)
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-2.0-flash-lite-preview-02-05")
 
 def summarize_article_with_gemini(article_text, language):
     prompt = (

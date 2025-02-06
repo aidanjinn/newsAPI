@@ -19,7 +19,7 @@ async def fetch_world_news(language):
     
         return await asyncio.to_thread(func, *args)
         
-     # these are the list of tasks to run concurrently
+    # these are the list of tasks to run concurrently
     tasks = [
         fetch_article(AP_pick_of_day, True, language),
         fetch_article(democracy_now_pick_of_day, True, language),
