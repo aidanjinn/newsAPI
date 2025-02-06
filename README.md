@@ -7,6 +7,7 @@
 The **News Summarization API** is a powerful tool built using **Python**, **Flask**, and **Google Gemini**. It provides summarized news articles from multiple publications and topics, including world news, sports, entertainment, and weather. Additionally, it supports translation of articles and summaries into most languages.
 
 ![Deployed API to ping](https://newsapi-r8fr.onrender.com/)
+![Deployed Frontend](https://recap-nine.vercel.app/)
 
 ---
 
