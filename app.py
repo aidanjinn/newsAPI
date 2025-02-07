@@ -111,7 +111,11 @@ def memory_stats():
     
     current_clear_time = None
     with next_cache_clear_lock:
-        current_clear_time = next_cache_clear or get_next_cache_clear_time()
+        # Only use the existing next_cache_clear value
+        current_clear_time = next_cache_clear
+        if current_clear_time is None:
+            # If it's truly not initialized, then get a new time
+            current_clear_time = get_next_cache_clear_time()
     
     time_remaining = max(0, (current_clear_time - now).total_seconds())
     hours, remainder = divmod(int(time_remaining), 3600)
