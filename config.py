@@ -63,5 +63,7 @@ supported_routes = [
     
     '/BBC-pick-of-day',
     
-    '/NPR-pick-of-day'
+    '/NPR-pick-of-day',
+    
+    '/japan-times-pick-of-day'
 ]

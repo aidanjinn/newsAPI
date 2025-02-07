@@ -45,3 +45,9 @@ def NPR_pick_of_day(ai, language = "English"):
     }
     return scrape_template(ai, language, url, 'section', attr_id)
 
+def japan_times_pick_of_day(ai, language = "English"):
+    url = "https://www.japantimes.co.jp/"
+    attr_id = {
+        'class' : 'jt-tab-breaking-news'
+    }
+    return scrape_template(ai, language, url, 'div', attr_id)

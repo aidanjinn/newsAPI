@@ -23,7 +23,8 @@ async def fetch_world_news(language):
         fetch_article(SCMP_pick_of_day, True, language),
         fetch_article(SCMP_china, True, language),
         fetch_article(BBC_pick_of_day, True, language),
-        fetch_article(NPR_pick_of_day, True, language)
+        fetch_article(NPR_pick_of_day, True, language),
+        fetch_article(japan_times_pick_of_day, True, language)
     ]
     return await asyncio.gather(*tasks)
 
@@ -89,4 +90,13 @@ def world_news_register_routes(app):
     @app.route('/NPR-pick-of-day-text', methods=['GET'])
     def scrape_article_NPR_text():
         result = NPR_pick_of_day(False)
+        return jsonify(result)
+    
+    @app.route('/japan-times-pick-of-day', methods=['GET'])
+    def scrape_article_japan_times():
+        return article_template(japan_times_pick_of_day, 'japan-times-pick')
+
+    @app.route('/japan-times-pick-of-day-text', methods=['GET'])
+    def scrape_article_japan_times_text():
+        result = japan_times_pick_of_day(False)
         return jsonify(result)
