@@ -67,8 +67,7 @@ def clear_old_cache():
                     next_cache_clear = get_next_cache_clear_time(current_time)
                     print(f"Next cache clear scheduled for: {next_cache_clear}")
             
-            # Sleep for 5 minutes before checking again
-            time.sleep(300)
+            time.sleep(60)
         except Exception as e:
             print(f"Error in cache clearing thread: {str(e)}")
             # Sleep briefly before retrying to avoid tight error loops
