@@ -31,6 +31,7 @@ next_cache_clear = None
 next_cache_clear_lock = threading.Lock()
 
 def get_next_cache_clear_time(current_time=None):
+    
     """Calculate the next cache clear time based on current time."""
     if current_time is None:
         current_time = datetime.utcnow()  
@@ -40,7 +41,7 @@ def get_next_cache_clear_time(current_time=None):
         minute=0,
         second=0,
         microsecond=0
-    ) + timedelta(hours=1)
+    ) + timedelta(hours=2)
     
     print(f"Current UTC time: {current_time}, Next cache clear time: {next_time}")
     return next_time
