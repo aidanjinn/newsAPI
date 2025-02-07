@@ -13,7 +13,9 @@ async def fetch_tech_news(language):
     tasks = [
         fetch_article(techcrunch_pick_of_day, True, language),
         fetch_article(zdnet_pick_of_day, True, language),
-        fetch_article(wired_pick_of_day, True, language)
+        fetch_article(wired_pick_of_day, True, language),
+        fetch_article(techreport_pick_of_day, True, language),
+        fetch_article(infoq_pick_of_day, True, language)
     ]
     return await asyncio.gather(*tasks)
 
@@ -28,27 +30,45 @@ def tech_news_register_routes(app):
         return jsonify(result)
 
     @app.route('/techcrunch-pick-of-day', methods=['GET'])
-    def scape_article_techcrunch():
+    def scrape_article_techcrunch():
         return article_template(techcrunch_pick_of_day, 'techcrunch-pick')
 
     @app.route('/techcrunch-pick-of-day-text', methods=['GET'])
-    def scape_article_techcrunch_text():
+    def scrape_article_techcrunch_text():
         result = techcrunch_pick_of_day(False)
         return jsonify(result)
 
     @app.route('/zdnet-pick-of-day', methods=['GET'])
-    def scape_article_zdnet():
+    def scrape_article_zdnet():
         return article_template(zdnet_pick_of_day, 'zdnet-pick')
     
     @app.route('/zdnet-pick-of-day-text', methods=['GET'])
-    def scape_article_zdnet_text():
+    def scrape_article_zdnet_text():
         result = zdnet_pick_of_day(False)
+        return jsonify(result)
+    
+    @app.route('/techreport-pick-of-day', methods=['GET'])
+    def scrape_article_techreport():
+        return article_template(techreport_pick_of_day, 'zdnet-pick')
+    
+    @app.route('/techreport-pick-of-day-text', methods=['GET'])
+    def scrape_article_techreport_text():
+        result = techreport_pick_of_day(False)
+        return jsonify(result)
+    
+    @app.route('/infoq-pick-of-day', methods=['GET'])
+    def scrape_article_developer_tech():
+        return article_template(infoq_pick_of_day, 'zdnet-pick')
+    
+    @app.route('/infoq-pick-of-day-text', methods=['GET'])
+    def scrape_article_developer_tech_text():
+        result = infoq_pick_of_day(False)
         return jsonify(result)
         
     @app.route('/tech-news', methods=['GET'])
-    def scape_article_tech_news():
+    def scrape_article_tech_news():
         return multi_article_template(fetch_tech_news, 'tech-news')
 
     @app.route('/tech-news-text', methods=['GET'])
-    def scape_article_tech_news_text():
-        return jsonify([techcrunch_pick_of_day(False), zdnet_pick_of_day(False), wired_pick_of_day(False)])
+    def scrape_article_tech_news_text():
+        return jsonify([techcrunch_pick_of_day(False), zdnet_pick_of_day(False), wired_pick_of_day(False), techreport_pick_of_day(False), infoq_pick_of_day(False)])

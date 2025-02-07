@@ -41,7 +41,7 @@ def get_next_cache_clear_time(current_time=None):
         minute=0,
         second=0,
         microsecond=0
-    ) + timedelta(hours=2)
+    ) + timedelta(hours=1)
     
     print(f"Current UTC time: {current_time}, Next cache clear time: {next_time}")
     return next_time

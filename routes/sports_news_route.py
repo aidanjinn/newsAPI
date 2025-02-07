@@ -16,7 +16,7 @@ async def fetch_yahoo_sports_recap(urls, language):
 def sports_news_register_routes(app):
     
     @app.route('/yahoo-sports-pick-of-day', methods=['GET'])
-    def scape_article_yahoo_sports_pick():
+    def scrape_article_yahoo_sports_pick():
 
         try:
             # Get the language query parameter, default to 'english'
@@ -50,14 +50,14 @@ def sports_news_register_routes(app):
             return jsonify({"error": str(e)}), 500
 
     @app.route('/yahoo-sports-pick-of-day-text', methods=['GET'])
-    def scape_article_yahoo_sports_pick_text():
+    def scrape_article_yahoo_sports_pick_text():
 
         result = yahoo_sports_pick_of_day("https://sports.yahoo.com/", False)
 
         return jsonify(result)
 
     @app.route('/yahoo-sports-breaking-news', methods=['GET'])
-    def scape_article_yahoo_sport_breaking_news():
+    def scrape_article_yahoo_sport_breaking_news():
 
         try:
             # Get the language query parameter, default to 'english'
@@ -78,14 +78,14 @@ def sports_news_register_routes(app):
             return jsonify({"error": str(e)}), 500
 
     @app.route('/yahoo-sports-breaking-news-text', methods=['GET'])
-    def scape_article_yahoo_sports_breaking_news_text():
+    def scrape_article_yahoo_sports_breaking_news_text():
 
         result = yahoo_sports_breaking_news(False)
 
         return jsonify(result)
 
     @app.route('/yahoo-sports', methods=['GET'])
-    def scape_article_yahoo_sports():
+    def scrape_article_yahoo_sports():
 
         try:
             # Get the language query parameter, default to 'english'
@@ -121,7 +121,7 @@ def sports_news_register_routes(app):
             return jsonify({"error": str(e)}), 500
 
     @app.route('/yahoo-sports-text', methods=['GET'])
-    def scape_article_yahoo_sports_text():
+    def scrape_article_yahoo_sports_text():
 
         breaking_news = yahoo_sports_breaking_news(False)
         pick_of_day = yahoo_sports_pick_of_day("https://sports.yahoo.com/",False)

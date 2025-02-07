@@ -54,7 +54,7 @@ def world_news_register_routes(app):
 
     @app.route('/world-news-text', methods=['GET'])
     def scrape_article_world_news_text():
-        return jsonify([AP_pick_of_day(False), democracy_now_pick_of_day(False), SCMP_pick_of_day(False), SCMP_china(False)])
+        return jsonify([AP_pick_of_day(False), democracy_now_pick_of_day(False), SCMP_pick_of_day(False), SCMP_china(False), BBC_pick_of_day(False), NPR_pick_of_day(False), japan_times_pick_of_day(False)])
 
     @app.route('/SCMP-pick-of-day', methods=['GET'])
     def scrape_article_SCMP():

@@ -142,3 +142,17 @@ def zdnet_pick_of_day(ai, language = "English"):
         'class': 'c-featureFeaturedStory'
     }
     return scrape_template(ai, language, url, 'div', attr_id)
+
+def techreport_pick_of_day(ai, language ="English"):
+    url = "https://techreport.com/"
+    attr_id = {
+        'class' : 'wp-block-rc-hero'
+    }
+    return scrape_template(ai, language, url, 'div', attr_id)
+
+def infoq_pick_of_day(ai, language = "English"):
+    url = "https://www.infoq.com/"
+    attr_id = {
+        'id' : 'mostPopularSection', 'class' : 'widget popular'
+    }
+    return scrape_template(ai, language, url, 'div', attr_id)
