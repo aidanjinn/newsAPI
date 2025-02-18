@@ -75,6 +75,19 @@ If you want the full article text without an AI summary, add `-text` to the end 
 
 ---
 
+## API Response Format
+
+AI Summary API endpoints return JSON objects in the following format:
+
+```json
+{
+    "article_link": "https://example.com/article",
+    "article_tags": "technology, AI, innovation",
+    "article_title": "Article Title",
+    "article_text": "Summarized or full article text..."
+}
+```
+
 ## Supported Routes
 
 Below is a list of all supported API routes:
