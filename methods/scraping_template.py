@@ -4,8 +4,16 @@ from methods.gemini import summarize_article_with_gemini
 
 def scrape_template(ai, language, url, div_type, attrs_id):
     try:
+        # Define the headers
+        headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Connection': 'keep-alive',
+        }
+
         # Send a GET request to the AP homepage
-        response = requests.get(url)
+        response = requests.get(url, headers=headers)
         response.raise_for_status() 
 
         # Parse the HTML content of the page using BeautifulSoup
@@ -27,7 +35,7 @@ def scrape_template(ai, language, url, div_type, attrs_id):
                     article_link = base_url + article_link
 
                 # Send a GET request to the article page to extract the article text
-                article_response = requests.get(article_link)
+                article_response = requests.get(article_link, headers = headers)
                 article_response.raise_for_status()
 
                 # Parse the article page
