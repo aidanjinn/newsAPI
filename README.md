@@ -25,7 +25,9 @@ newsAPI/
 │   ├── sports_news.py
 │   ├── tech_news.py
 │   ├── weather_news.py
+│   ├── scraping_template.py
 │   └── world_news.py
+
 ├── routes/
 │   ├── entertainment_news_route.py
 │   ├── fashion_news_route.py
@@ -85,6 +87,9 @@ Below is a list of all supported API routes:
 | `/rolling-stone-movies-tv-pick-of-day`     | Rolling Stone's movies/TV pick of the day        |
 | `/yahoo-sports`                            | Yahoo Sports (breaking news and pick of the day) |
 | `/democracy-now-pick-of-day`               | Democracy Now's pick of the day                  |
+| `/BBC-now-pick-of-day`                     | BBC pick of the day                              |
+| `/NPR-now-pick-of-day`                     | NPR pick of the day                              |
+| `/japan-times-now-pick-of-day`             | Japan Times pick of the day                      |
 | `/world-news`                              | Top world news stories                           |
 | `/SCMP-pick-of-day`                        | South China Morning Post's pick of the day       |
 | `/SCMP-china-top-story`                    | SCMP's top China story                           |
@@ -92,6 +97,9 @@ Below is a list of all supported API routes:
 | `/fashion-news`                            | Latest fashion news                              |
 | `/techcrunch-pick-of-day`                  | TechCrunch's pick of the day                     |
 | `/zdnet-pick-of-day`                       | ZDNet's pick of the day                          |
+| `/techreport-pick-of-day`                  | Techreport' pick of the day                      |
+| `/infoq-pick-of-day`                       | Infoq' pick of the day                           |
+| `/forbes-pick-of-day`                      | Forbes' pick of the day                          |
 | `/tech-news`                               | Top tech news                                    |
 | `/weather-channel-pick-of-day`             | The Weather Channel's pick of the day            |
 | `/weather-gov-pick-of-day`                 | Weather.gov's pick of the day                    |
@@ -99,6 +107,7 @@ Below is a list of all supported API routes:
 | `/yahoo-finance-pick-of-day`               | Yahoo Finance's pick of the day                  |
 | `/economist-pick-of-day`                   | The Economist's pick of the day                  |
 | `/forbes-pick-of-day`                      | Forbes' pick of the day                          |
+| `/investopedia-pick-of-day`                | Investopedia' pick of the day                    |
 | `/finance-news`                            | Top finance news                                 |
 | `/yahoo-sports-recap`                      | Top articles for major sports leagues            |
 | `/people-pick-of-day`                      | People's pick of the day                         |
