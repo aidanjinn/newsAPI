@@ -50,11 +50,13 @@ def wired_pick_of_day(ai, language = "English"):
 
                     if ai:
                         summary = summarize_article_with_gemini(article_text, language)
+                        summary, tags = summary.split(":?TAGS:")
                     else:
                         summary = article_text
 
                     return {
                         "article_link": article_link,
+                        "article_tags": tags,
                         "article_title": title,
                         "article_text": summary
                     }
@@ -119,11 +121,13 @@ def techcrunch_pick_of_day(ai, language = "English"):
 
                 if ai:
                     summary = summarize_article_with_gemini(article_text, language)
+                    summary, tags = summary.split(":?TAGS:")
                 else:
                     summary = article_text
 
                 return {
                     "article_link": article_link,
+                    "article_tags": tags,
                     "article_title": title,
                     "article_text": summary
                 }

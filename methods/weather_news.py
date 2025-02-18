@@ -52,11 +52,13 @@ def weather_gov_pick_of_day(ai, language = "English"):
 
                 if ai:
                     summary = summarize_article_with_gemini(article_text, language)
+                    summary, tags = summary.split(":?TAGS:")
                 else:
                     summary = article_text
 
                 return {
                     "article_link": article_link,
+                    "article_tags": tags,
                     "article_title": "Short Range Forecast Discussion",
                     "article_text": summary
                 }

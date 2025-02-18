@@ -317,6 +317,29 @@
             line-height: 1.6;
             margin: 0;
         }
+        /* Add new styles for tags */
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .tag {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .tag {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -409,6 +432,11 @@
                                 <div class="article-content">
                                     <a href="${item.article_link}" target="_blank" class="article-title">${item.article_link}</a>
                                     <h1 class="article-title">${item.article_title}</h1>
+                                    <div class="article-tags">
+                                        ${item.article_tags ? item.article_tags.split(',').map(tag => 
+                                            `<span class="tag">${tag.trim()}</span>`
+                                        ).join('') : ''}
+                                    </div>
                                     <div class="article-text">${formatArticleText(item.article_text)}</div>
                                 </div>
                             `;
@@ -421,6 +449,11 @@
                             <div class="article-content">
                                 <a href="${data.article_link}" target="_blank" class="article-title">${data.article_link}</a>
                                 <h1 class="article-title">${data.article_title}</h1>
+                                <div class="article-tags">
+                                    ${data.article_tags ? data.article_tags.split(',').map(tag => 
+                                        `<span class="tag">${tag.trim()}</span>`
+                                    ).join('') : ''}
+                                </div>
                                 <div class="article-text">${formatArticleText(data.article_text)}</div>
                             </div>
                         `;

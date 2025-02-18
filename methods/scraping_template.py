@@ -53,11 +53,13 @@ def scrape_template(ai, language, url, div_type, attrs_id):
 
                 if ai:
                     summary = summarize_article_with_gemini(article_text, language)
+                    summary, tags = summary.split(":?TAGS:")
                 else:
                     summary = article_text
 
                 return {
                     "article_link": article_link,
+                    "article_tags": tags,
                     "article_title": title,
                     "article_text": summary
                 }
@@ -113,11 +115,13 @@ def yahoo_scrape_template(ai, language, url, div_type, attrs_id):
 
                 if ai:
                     summary = summarize_article_with_gemini(article_text, language)
+                    summary, tags = summary.split(":?TAGS:")
                 else:
                     summary = article_text
 
                 return {
                     "article_link": article_link,
+                    "article_tags": tags,
                     "article_title": title,
                     "article_text": summary
                 }
