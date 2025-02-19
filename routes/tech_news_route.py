@@ -49,7 +49,7 @@ def tech_news_register_routes(app):
     
     @app.route('/techreport-pick-of-day', methods=['GET'])
     def scrape_article_techreport():
-        return article_template(techreport_pick_of_day, 'zdnet-pick')
+        return article_template(techreport_pick_of_day, 'techreport-pick')
     
     @app.route('/techreport-pick-of-day-text', methods=['GET'])
     def scrape_article_techreport_text():
@@ -58,7 +58,7 @@ def tech_news_register_routes(app):
     
     @app.route('/infoq-pick-of-day', methods=['GET'])
     def scrape_article_developer_tech():
-        return article_template(infoq_pick_of_day, 'zdnet-pick')
+        return article_template(infoq_pick_of_day, 'infoq-pick')
     
     @app.route('/infoq-pick-of-day-text', methods=['GET'])
     def scrape_article_developer_tech_text():
