@@ -88,6 +88,31 @@ AI Summary API endpoints return JSON objects in the following format:
 }
 ```
 
+Topic Routes (such as /world-news) Return a list of multiple JSON object in the following format:
+
+```json
+[
+    {
+        "article_link": "https://example.com/article1",
+        "article_tags": "technology, AI, innovation",
+        "article_title": "Article Title1",
+        "article_text": "Summarized or full article text..."
+    },
+    {
+        "article_link": "https://example.com/article2",
+        "article_tags": "technology, AI, innovation",
+        "article_title": "Article Title2",
+        "article_text": "Summarized or full article text..."
+    },
+    {
+        "article_link": "https://example.com/article3",
+        "article_tags": "technology, AI, innovation",
+        "article_title": "Article Title3",
+        "article_text": "Summarized or full article text..."
+    }
+]
+```
+
 ## Supported Routes
 
 Below is a list of all supported API routes:
