@@ -55,6 +55,7 @@ def weather_gov_pick_of_day(ai, language = "English"):
                     summary, tags = summary.split(":?TAGS:")
                 else:
                     summary = article_text
+                    tags = ""
 
                 return {
                     "article_link": article_link,

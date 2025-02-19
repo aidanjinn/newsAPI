@@ -56,6 +56,7 @@ def scrape_template(ai, language, url, div_type, attrs_id):
                     summary, tags = summary.split(":?TAGS:")
                 else:
                     summary = article_text
+                    tags = ""
 
                 return {
                     "article_link": article_link,
@@ -118,6 +119,7 @@ def yahoo_scrape_template(ai, language, url, div_type, attrs_id):
                     summary, tags = summary.split(":?TAGS:")
                 else:
                     summary = article_text
+                    tags = ""
 
                 return {
                     "article_link": article_link,
