@@ -106,7 +106,6 @@ def techcrunch_pick_of_day(ai, language = "English"):
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
 
                 try:
-                    
                     title_comp = (
                         article_soup.find('h1', {'class': 'article__title'}) or
                         article_soup.find('h1', {'class': 'article-hero__title'}) or
@@ -147,18 +146,27 @@ def zdnet_pick_of_day(ai, language = "English"):
     attr_id = {
         'class': 'c-featureFeaturedStory'
     }
-    return scrape_template(ai, language, url, 'div', attr_id)
+    attr_author = {
+       'class' : 'c-globalAuthor_metaItem' 
+    }
+    return scrape_template(ai, language, url, 'div', attr_id, 'a', attr_author, ['span'])
 
 def techreport_pick_of_day(ai, language ="English"):
     url = "https://techreport.com/"
     attr_id = {
         'class' : 'wp-block-rc-hero'
     }
-    return scrape_template(ai, language, url, 'div', attr_id)
+    attr_author = {
+        'class' : 'page-header__author-name'
+    }
+    return scrape_template(ai, language, url, 'div', attr_id, 'p', attr_author)
 
 def infoq_pick_of_day(ai, language = "English"):
     url = "https://www.infoq.com/"
     attr_id = {
         'id' : 'mostPopularSection', 'class' : 'widget popular'
     }
-    return scrape_template(ai, language, url, 'div', attr_id)
+    attr_author = {
+        'class' : 'author__name'
+    }
+    return scrape_template(ai, language, url, 'div', attr_id, 'span', attr_author)

@@ -7,7 +7,12 @@ def weather_channel_pick_of_day(ai, language = "English"):
     url = "https://weather.com"
     attr_id = {
             'class': 'region-main regionMain DaybreakLargeScreen--regionMain--VnUqQ', 'aria-label': 'Main Content'}
-    return scrape_template(ai, language, url, 'main', attr_id)
+    
+    attr_author = {
+        'class' : 'ArticleHeader--header--5NFZ-'
+    }
+    
+    return scrape_template(ai, language, url, 'main', attr_id, 'div', attr_author)
 
 
 def weather_gov_pick_of_day(ai, language = "English"):
@@ -59,6 +64,7 @@ def weather_gov_pick_of_day(ai, language = "English"):
 
                 return {
                     "article_link": article_link,
+                    "article_author" : "NWS Weather Prediction Center College Park MD",
                     "article_tags": tags,
                     "article_title": "Short Range Forecast Discussion",
                     "article_text": summary

@@ -2,7 +2,24 @@ import requests
 from bs4 import BeautifulSoup
 from methods.gemini import summarize_article_with_gemini
 
-def scrape_template(ai, language, url, div_type, attrs_id):
+def authors_scrape(soup, div_type, attrs_id, elements):
+    try:  
+        authors_div = soup.find(div_type, attrs=attrs_id)
+        if authors_div:
+            
+            
+            author_list = authors_div.find(elements)
+            author_names = [author.get_text(strip=True) for author in author_list if author.get_text(strip=True)]
+
+            return ", ".join([name for name in author_names if name])
+        else:
+            return None
+        
+    except Exception as e:
+        print(f"Error in authors_scrape: {e}")
+        return None
+
+def scrape_template(ai, language, url, div_type, attrs_id, author_div_type = "", author_attrs_id = "", elements=['a']):
     try:
         # Define the headers
         headers = {
@@ -27,6 +44,7 @@ def scrape_template(ai, language, url, div_type, attrs_id):
             main_article_link = main_content_div.find('a', href=True)
 
             if main_article_link:
+                
                 article_link = main_article_link['href']
 
                 # Handle relative URLs by adding the base URL
@@ -40,6 +58,11 @@ def scrape_template(ai, language, url, div_type, attrs_id):
 
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
+                
+                # Looking for authors
+                authors = ""
+                if author_div_type != "" and author_attrs_id != "":
+                    authors = authors_scrape(article_soup, author_div_type, author_attrs_id, elements)
 
                 # Article title look for first <h1> tag
                 title_comp = article_soup.find('h1')
@@ -60,6 +83,7 @@ def scrape_template(ai, language, url, div_type, attrs_id):
 
                 return {
                     "article_link": article_link,
+                    "article_authors": authors,
                     "article_tags": tags,
                     "article_title": title,
                     "article_text": summary
@@ -72,7 +96,7 @@ def scrape_template(ai, language, url, div_type, attrs_id):
     except requests.exceptions.RequestException as e:
         return {"error": f"An error occurred while fetching the data: {e}"}
     
-def yahoo_scrape_template(ai, language, url, div_type, attrs_id):
+def yahoo_scrape_template(ai, language, url, div_type, attrs_id, author_div_type = "", author_attrs_id = "", elements=['a']):
     
     try:
         # Send a GET request to the AP homepage
@@ -104,6 +128,11 @@ def yahoo_scrape_template(ai, language, url, div_type, attrs_id):
 
                 # Parse the article page
                 article_soup = BeautifulSoup(article_response.content, 'html.parser')
+                
+                # Looking for authors
+                authors = ""
+                if author_div_type != "" and author_attrs_id != "":
+                    authors = authors_scrape(article_soup, author_div_type, author_attrs_id, elements)
 
                 div_comp = article_soup.find('div', attrs={'class': 'caas-title-wrapper'})
                 title = div_comp.find('h1').get_text(strip=True)
@@ -123,6 +152,7 @@ def yahoo_scrape_template(ai, language, url, div_type, attrs_id):
 
                 return {
                     "article_link": article_link,
+                    "article_author" : authors,
                     "article_tags": tags,
                     "article_title": title,
                     "article_text": summary
