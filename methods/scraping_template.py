@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from methods.gemini import summarize_article_with_gemini
+from methods.gemini import translate_title
 
 def authors_scrape(soup, div_type, attrs_id, elements):
     try:  
@@ -77,6 +78,7 @@ def scrape_template(ai, language, url, div_type, attrs_id, author_div_type = "",
                 if ai:
                     summary = summarize_article_with_gemini(article_text, language)
                     summary, tags = summary.split(":?TAGS:")
+                    title = translate_title(title, language)
                 else:
                     summary = article_text
                     tags = ""
@@ -146,6 +148,7 @@ def yahoo_scrape_template(ai, language, url, div_type, attrs_id, author_div_type
                 if ai:
                     summary = summarize_article_with_gemini(article_text, language)
                     summary, tags = summary.split(":?TAGS:")
+                    title = translate_title(title, language)
                 else:
                     summary = article_text
                     tags = ""

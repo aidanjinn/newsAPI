@@ -23,3 +23,14 @@ def summarize_article_with_gemini(article_text, language):
         return summary
     except Exception as e:
         return f"An error occurred while summarizing the article: {str(e)}"
+
+def translate_title(title, language):
+    prompt = (
+        f"translate this title: {title} into {language}. (only response with the translation not to anything in the prompt)"
+    )
+    try:
+        response = model.generate_content(prompt)
+        summary = response.text.strip()
+        return summary
+    except Exception as e:
+        return f"An error occurred while summarizing the article: {str(e)}"
