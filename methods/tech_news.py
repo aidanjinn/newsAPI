@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 from methods.gemini import summarize_article_with_gemini
 from methods.scraping_template import scrape_template
-from methods.gemini import translate_title
 
 def wired_pick_of_day(ai, language = "English"):
     url = "https://www.wired.com/"
@@ -50,9 +49,8 @@ def wired_pick_of_day(ai, language = "English"):
                     article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                     if ai:
-                        summary = summarize_article_with_gemini(article_text, language)
-                        summary, tags = summary.split(":?TAGS:")
-                        title = translate_title(title, language)
+                        summary = summarize_article_with_gemini(article_text, language, title)
+                        summary, tags, title = summary.split(":?PROMPT:")
                     else:
                         summary = article_text
                         tags = ""
@@ -122,9 +120,8 @@ def techcrunch_pick_of_day(ai, language = "English"):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text, language)
-                    summary, tags = summary.split(":?TAGS:")
-                    title = translate_title(title, language)
+                    summary = summarize_article_with_gemini(article_text, language, title)
+                    summary, tags, title = summary.split(":?PROMPT:")
                 else:
                     summary = article_text
                     tags = ""

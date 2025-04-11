@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 from methods.gemini import summarize_article_with_gemini
 from methods.scraping_template import scrape_template
-from methods.gemini import translate_title
 
 def weather_channel_pick_of_day(ai, language = "English"):
     url = "https://weather.com"
@@ -57,9 +56,8 @@ def weather_gov_pick_of_day(ai, language = "English"):
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text, language)
-                    summary, tags = summary.split(":?TAGS:")
-                    title = translate_title(summary, language)
+                    summary = summarize_article_with_gemini(article_text, language, "")
+                    summary, tags, title = summary.split(":?PROMPT:")
                 else:
                     summary = article_text
                     tags = ""

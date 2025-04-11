@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from methods.gemini import summarize_article_with_gemini
-from methods.gemini import translate_title
 
 def authors_scrape(soup, div_type, attrs_id, elements):
     try:  
@@ -76,9 +75,8 @@ def scrape_template(ai, language, url, div_type, attrs_id, author_div_type = "",
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text, language)
-                    summary, tags = summary.split(":?TAGS:")
-                    title = translate_title(title, language)
+                    summary = summarize_article_with_gemini(article_text, language, title)
+                    summary, tags, title = summary.split(":?PROMPT:")
                 else:
                     summary = article_text
                     tags = ""
@@ -136,8 +134,8 @@ def yahoo_scrape_template(ai, language, url, div_type, attrs_id, author_div_type
                 if author_div_type != "" and author_attrs_id != "":
                     authors = authors_scrape(article_soup, author_div_type, author_attrs_id, elements)
 
+                title = article_soup.find('h1').get_text(strip=True)
                 div_comp = article_soup.find('div', attrs={'class': 'caas-title-wrapper'})
-                title = div_comp.find('h1').get_text(strip=True)
 
                 # Extract article content (usually inside <p> tags)
                 paragraphs = article_soup.find_all('p')
@@ -146,9 +144,8 @@ def yahoo_scrape_template(ai, language, url, div_type, attrs_id, author_div_type
                 article_text = "\n".join([para.get_text(strip=True) for para in paragraphs])
 
                 if ai:
-                    summary = summarize_article_with_gemini(article_text, language)
-                    summary, tags = summary.split(":?TAGS:")
-                    title = translate_title(title, language)
+                    summary = summarize_article_with_gemini(article_text, language, title)
+                    summary, tags, title = summary.split(":?PROMPT:")
                 else:
                     summary = article_text
                     tags = ""
