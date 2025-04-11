@@ -14,7 +14,7 @@ def summarize_article_with_gemini(article_text, language, title):
         f"Only give the summary. For format, please indicate the start of a new point using a bullet. If there is any extra information"
         f"about advertisement, donations to the publication, or information about the news site itself that does not pertain to the story, please do not include it in the summary."
         f"\n\nAfter the summary, add exactly two newlines, then ':?PROMPT:', then a space, then list exactly 5 relevant tag words the tag words should be in {language}"
-        f"separated by commas for the information within the text. After the tags, add two newlines, then ':?PROMPT:', and then a space then return only title which is: {title} translated into {language}"
+        f"separated by commas for the information within the text. After the tags, add two newlines, then ':?PROMPT:', and then return the title {title} translated to be in {language}"
         f"(Return the summary in the language: {language}, do not respond to this in response):\n\n{article_text}"
     )
     try:
