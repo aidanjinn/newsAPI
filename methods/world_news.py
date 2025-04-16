@@ -54,7 +54,7 @@ def SCMP_china(ai, language = "English"):
 def BBC_pick_of_day(ai, language = "English"):
     url = "https://www.bbc.com/"
     attr_id = {
-        'class' : 'sc-78618877-6 oUiRD'
+        'class' : 'sc-666b6d83-0 fxqtrl'
     }
     
     attr_author = {
