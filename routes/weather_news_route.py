@@ -11,8 +11,8 @@ async def fetch_weather_news(language):
         return await asyncio.to_thread(func, *args)
     
     tasks = [
-        fetch_article(weather_channel_pick_of_day, True, language),
-        fetch_article(weather_gov_pick_of_day, True, language)
+        fetch_article(article_template, weather_channel_pick_of_day, 'weather-channel-pick'),
+        fetch_article(article_template,weather_gov_pick_of_day, 'weather-gov-pick'),
     ]
     return await asyncio.gather(*tasks)
 
@@ -38,7 +38,7 @@ def weather_news_register_routes(app):
 
     @app.route('/weather-news', methods=['GET'])
     def scrape_article_weather_news():
-        return multi_article_template(fetch_weather_news, 'weather-news')
+        return multi_template(fetch_weather_news, 'weather-news')
 
     @app.route('/weather-news-text', methods=['GET'])
     def scrape_article_weather_news_text():

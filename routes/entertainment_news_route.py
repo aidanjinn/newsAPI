@@ -6,15 +6,17 @@ import asyncio
 from config import supported_languages
 from routes.helper_functions import *
 
+
 async def fetch_entertainment_news(language):
     async def fetch_article(func, *args):
         return await asyncio.to_thread(func, *args)
-    
+
     tasks = [
-        fetch_article(rolling_stone_pick_of_day, True, language),
-        fetch_article(people_pick_of_day, True, language)
+        fetch_article(article_template, rolling_stone_pick_of_day, 'rolling-stone-movies-tv-pick'),
+        fetch_article(article_template, people_pick_of_day, 'people-pick')
     ]
     return await asyncio.gather(*tasks)
+
 
 def entertainment_news_register_routes(app):
     
@@ -38,7 +40,7 @@ def entertainment_news_register_routes(app):
 
     @app.route('/entertainment-news', methods=['GET'])
     def scrape_article_entertainment():
-        return multi_article_template(fetch_entertainment_news, 'entertainment-news')
+        return multi_template(fetch_entertainment_news, 'entertainment-news')
 
     @app.route('/entertainment-news-text', methods=['GET'])
     def scrape_article26_text():

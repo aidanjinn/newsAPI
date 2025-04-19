@@ -10,10 +10,10 @@ async def fetch_finance_news(language):
     async def fetch_article(func, *args):
         return await asyncio.to_thread(func, *args)
     tasks = [
-        fetch_article(yahoo_finance_pick_of_day, True, language),
-        fetch_article(economist_pick_of_day, True, language),
-        fetch_article(forbes_pick_of_day, True, language),
-        fetch_article(investopedia_pick_of_day, True, language)
+        fetch_article(article_template, yahoo_finance_pick_of_day, 'yahoo-finance-pick'),
+        fetch_article(article_template, economist_pick_of_day, 'economist-pick'),
+        fetch_article(article_template, forbes_pick_of_day, 'forbes-pick'),
+        fetch_article(article_template, investopedia_pick_of_day, 'investopedia-pick'),
     ]
     return await asyncio.gather(*tasks)
 
@@ -57,7 +57,7 @@ def finance_news_register_routes(app):
 
     @app.route('/finance-news', methods=['GET'])
     def scrape_article_finance_news():
-        return multi_article_template(fetch_finance_news, 'finance-news')
+        return multi_template(fetch_finance_news, 'finance-news')
             
     @app.route('/finance-news-text', methods=['GET'])
     def scrape_article_finance_news_text():

@@ -1,3 +1,4 @@
+from methods import tech_news
 from methods.tech_news import *
 from flask import jsonify, request
 from methods.cache import *
@@ -11,11 +12,11 @@ async def fetch_tech_news(language):
         return await asyncio.to_thread(func, *args)
     
     tasks = [
-        fetch_article(techcrunch_pick_of_day, True, language),
-        fetch_article(zdnet_pick_of_day, True, language),
-        fetch_article(wired_pick_of_day, True, language),
-        fetch_article(techreport_pick_of_day, True, language),
-        fetch_article(infoq_pick_of_day, True, language)
+        fetch_article(article_template,techcrunch_pick_of_day,'techcrunch-pick'),
+        fetch_article(article_template,zdnet_pick_of_day, 'zdnet-pick'),
+        fetch_article(article_template,wired_pick_of_day, 'wired-pick'),
+        fetch_article(article_template,techreport_pick_of_day, 'techreport-pick'),
+        fetch_article(article_template,infoq_pick_of_day, 'infoq-pick')
     ]
     return await asyncio.gather(*tasks)
 
@@ -67,7 +68,7 @@ def tech_news_register_routes(app):
         
     @app.route('/tech-news', methods=['GET'])
     def scrape_article_tech_news():
-        return multi_article_template(fetch_tech_news, 'tech-news')
+        return multi_template(fetch_tech_news, 'tech-news')
 
     @app.route('/tech-news-text', methods=['GET'])
     def scrape_article_tech_news_text():

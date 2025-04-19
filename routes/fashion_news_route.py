@@ -11,8 +11,8 @@ async def fetch_fashion_news(language):
         return await asyncio.to_thread(func, *args)
     
     tasks = [
-        fetch_article(vogue_pick_of_day, True, language),
-        fetch_article(cosmo_style, True, language)
+        fetch_article(article_template, vogue_pick_of_day, 'vogue-pick'),
+        fetch_article(article_template, cosmo_style, 'cosmo-style-pick'),
     ]
     return await asyncio.gather(*tasks)
 
@@ -38,7 +38,7 @@ def fashion_news_register_routes(app):
 
     @app.route('/fashion-news', methods=['GET'])
     def scrape_article_fashion():
-        return multi_article_template(fetch_fashion_news, 'fashion-news')
+        return multi_template(fetch_fashion_news, 'fashion-news')
 
     @app.route('/fashion-news-text', methods=['GET'])
     def scrape_article14_text():

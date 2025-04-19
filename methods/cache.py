@@ -101,7 +101,7 @@ def is_valid_article_data(data):
                     article['article_title'], 
                     article['article_text']
                 ]))
-    
+
     if isinstance(data, list):
         return all(check_article(article) for article in data)
     return check_article(data)

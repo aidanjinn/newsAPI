@@ -18,13 +18,13 @@ async def fetch_world_news(language):
     async def fetch_article(func, *args):
         return await asyncio.to_thread(func, *args)
     tasks = [
-        fetch_article(AP_pick_of_day, True, language),
-        fetch_article(democracy_now_pick_of_day, True, language),
-        fetch_article(SCMP_pick_of_day, True, language),
-        fetch_article(SCMP_china, True, language),
-        fetch_article(BBC_pick_of_day, True, language),
-        fetch_article(NPR_pick_of_day, True, language),
-        fetch_article(japan_times_pick_of_day, True, language)
+        fetch_article(article_template, AP_pick_of_day, 'AP-pick'),
+        fetch_article(article_template,democracy_now_pick_of_day, 'democracy-now-pick'),
+        fetch_article(article_template,SCMP_pick_of_day, 'SCMP-pick'),
+        fetch_article(article_template,SCMP_china, 'SCMP-china'),
+        fetch_article(article_template,BBC_pick_of_day, 'BBC-pick'),
+        fetch_article(article_template,NPR_pick_of_day, 'NPR-pick'),
+        fetch_article(article_template,japan_times_pick_of_day, 'japan-times-pick')
     ]
     return await asyncio.gather(*tasks)
 
@@ -50,7 +50,7 @@ def world_news_register_routes(app):
 
     @app.route('/world-news', methods=['GET'])
     def scrape_article_world_news():
-        return multi_article_template(fetch_world_news, 'world-news')
+        return multi_template(fetch_world_news, 'world_news')
 
     @app.route('/world-news-text', methods=['GET'])
     def scrape_article_world_news_text():
